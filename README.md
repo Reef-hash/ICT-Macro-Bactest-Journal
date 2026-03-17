@@ -8,7 +8,7 @@
 ## 📱 Cara Guna
 
 1. **Download** atau **clone** repository
-2. **Buka** `index.html` dalam browser (Chrome/Safari/Edge)
+2. **Buka** https://reef-hash.github.io/ICT-Macro-Bactest-Journal/ dalam browser (Chrome/Safari/Edge)
 3. **Masukkan trade:**
    - Risk (pip/points)
    - Reward (pip/points)
