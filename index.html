@@ -1225,49 +1225,82 @@
          * Format: No,Risk,Reward,RR,RR Category,Outcome,Timestamp
          */
         function exportData() {
-            if(trades.length === 0) {
-                alert('Tiada data untuk diexport');
-                return;
-            }
-            
-            // CSV Header
-            let csv = 'No,Risk,Reward,RR,RR Category,Outcome,Timestamp\\n';
-            
-            // Data rows
-            trades.forEach(t => {
-                csv += `${t.number},${t.risk},${t.reward},${t.rr.toFixed(2)},${t.rrCategory},${t.outcome},${t.timestamp || 'N/A'}\\n`;
-            });
-            
-            // Summary section
-            csv += `\\nSummary Statistics\\n`;
-            csv += `Total Trade,${trades.length}\\n`;
-            csv += `Win Rate,${document.getElementById('winRate').textContent}\\n`;
-            csv += `Loss Rate,${document.getElementById('lossRate').textContent}\\n`;
-            csv += `BE Rate,${document.getElementById('beRate').textContent}\\n`;
-            csv += `Average RRR,${document.getElementById('avgRRR').textContent}\\n`;
-            csv += `Expectancy,${document.getElementById('expectancy').textContent}\\n`;
-            csv += `Exported Date,${new Date().toLocaleString()}\\n`;
-            
-            // Create and trigger download
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            
-            // Filename with date
-            const dateStr = new Date().toISOString().split('T')[0];
-            link.href = url;
-            link.download = `ICT_Backtest_Zarif_${dateStr}.csv`;
-            
-            // Trigger download
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Cleanup
-            URL.revokeObjectURL(url);
-            
-            console.log(`Exported ${trades.length} trades to CSV`);
+    if (trades.length === 0) {
+        alert('Tiada data untuk diexport');
+        return;
+    }
+
+    // Helper function to safely quote CSV field
+    function csvEscape(value) {
+        if (value === null || value === undefined) return '';
+        value = String(value);
+        // If contains quote, comma, or newline → quote it and escape inner quotes
+        if (value.includes('"') || value.includes(',') || value.includes('\n')) {
+            value = '"' + value.replace(/"/g, '""') + '"';
         }
+        return value;
+    }
+
+    let csvLines = [];
+
+    // Header row
+    csvLines.push([
+        'No',
+        'Risk',
+        'Reward',
+        'RR',
+        'RR Category',
+        'Outcome',
+        'Timestamp'
+    ].map(csvEscape).join(','));
+
+    // Trade data rows
+    trades.forEach(t => {
+        csvLines.push([
+            t.number,
+            t.risk,
+            t.reward,
+            t.rr.toFixed(2),
+            t.rrCategory,
+            t.outcome,
+            t.timestamp || 'N/A'
+        ].map(csvEscape).join(','));
+    });
+
+    // Add empty line as separator
+    csvLines.push([]);
+
+    // Summary section (as separate rows, more readable in Excel)
+    csvLines.push(['Summary Statistics']);
+    csvLines.push(['Total Trade', trades.length]);
+    csvLines.push(['Win Rate', document.getElementById('winRate').textContent]);
+    csvLines.push(['Loss Rate', document.getElementById('lossRate').textContent]);
+    csvLines.push(['BE Rate', document.getElementById('beRate').textContent]);
+    csvLines.push(['Average RRR', document.getElementById('avgRRR').textContent]);
+    csvLines.push(['Expectancy', document.getElementById('expectancy').textContent]);
+    csvLines.push(['Exported Date', new Date().toLocaleString('ms-MY', { timeZone: 'Asia/Kuala_Lumpur' })]);
+
+    // Join all lines
+    const csvContent = csvLines.join('\n');
+
+    // Create Blob with UTF-8 BOM (penting untuk Excel Malaysia/Indonesia supaya tak rosak huruf Melayu)
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
+    const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.href = url;
+    link.download = `ICT_Backtest_Zarif_${dateStr}.csv`;
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    console.log(`Exported ${trades.length} trades to CSV`);
+}
 
         // ==========================================
         // UTILITY FUNCTIONS
