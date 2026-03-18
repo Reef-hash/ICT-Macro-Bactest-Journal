@@ -974,9 +974,15 @@
             
             // Categorize RRR (with tolerance for floating point)
             let rrCategory = 'other';
-            if(Math.abs(rr - 1) < 0.15) rrCategory = '1:1';
-            else if(Math.abs(rr - 2) < 0.25) rrCategory = '1:2';
-            else if(Math.abs(rr - 3) < 0.35) rrCategory = '1:3';
+            if (rr >= 0.9 && rr < 1.4) {
+             rrCategory = '1:1';
+            } else if (rr >= 1.6 && rr < 2.4) {
+             rrCategory = '1:2';
+            } else if (rr >= 2.6 && rr < 3.5) {
+             rrCategory = '1:3';
+            } else if (rr >= 3.6) {
+             rrCategory = '1:4+';
+            }
             
             // Create trade object
             const trade = {
