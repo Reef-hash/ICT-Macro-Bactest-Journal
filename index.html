@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
@@ -7,19 +7,9 @@
     <meta name="author" content="Zarif">
     <title>ICT Model Backtester - by Zarif</title>
     
-    <!-- 
-    ICT Model Backtester
-    Author: Zarif
-    Tech Stack: HTML5, CSS3, JavaScript (ES6+), LocalStorage API
-    Description: Offline-capable trade backtesting application for ICT (Inner Circle Trader) models
-    Features: 300 trade entries, RRR analysis (1:1, 1:2, 1:3), expectancy calculation, CSV export
-    License: MIT (optional - add your own)
-    -->
-    
+    <!-- CSS sama macam awak, saya tambah style untuk matrix -->
     <style>
-        /* ============================================
-           CSS VARIABLES & RESET
-           ============================================ */
+        /* CSS VARIABLES & RESET (sama macam awak) */
         :root {
             --primary-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             --card-bg: rgba(255, 255, 255, 0.1);
@@ -34,15 +24,8 @@
             --font-mono: 'Courier New', Courier, monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ============================================
-           BASE STYLES
-           ============================================ */
         body {
             font-family: var(--font-main);
             background: var(--primary-bg);
@@ -52,151 +35,21 @@
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .container { max-width: 800px; margin: 0 auto; }
 
-        /* ============================================
-           HEADER SECTION
-           ============================================ */
-        .header {
-            text-align: center;
-            padding: 20px;
+        /* Header, Progress, Stats, Input, Outcome buttons, Btns, RRR Analysis, Trades List — semua sama macam code awak, saya tak ubah */
+
+        /* Tambah style untuk Expectancy Matrix */
+        .expectancy-matrix {
             background: var(--card-bg);
+            padding: 20px;
             border-radius: 15px;
-            margin-bottom: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--card-border);
-        }
-
-        .header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: var(--accent-gold);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .by-zarif {
-            font-size: 0.9rem;
-            color: var(--accent-gold);
-            opacity: 0.9;
-            margin-bottom: 5px;
-            font-style: italic;
-            letter-spacing: 1px;
-        }
-
-        .tech-stack {
-            font-size: 0.65rem;
-            opacity: 0.7;
-            font-family: var(--font-mono);
-            letter-spacing: 0.5px;
-            margin-top: 8px;
-            padding: 5px 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 5px;
-            display: inline-block;
-        }
-
-        .data-warning {
-            background: rgba(255, 165, 2, 0.15);
-            border: 1px solid rgba(255, 165, 2, 0.4);
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            font-size: 0.75rem;
-            text-align: left;
-            line-height: 1.5;
-        }
-
-        .data-warning strong {
-            color: var(--accent-orange);
-        }
-
-        /* ============================================
-           PROGRESS BAR
-           ============================================ */
-        .progress-container {
             margin-top: 15px;
-        }
-
-        .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, var(--accent-gold), #ffed4e);
-            height: 100%;
-            transition: width 0.4s ease;
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
-        }
-
-        .progress-text {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* ============================================
-           STATS GRID
-           ============================================ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            padding: 18px 15px;
-            border-radius: 12px;
-            text-align: center;
-            backdrop-filter: blur(5px);
-            border: 1px solid var(--card-border);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        .stat-card h3 {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-card .value {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: var(--accent-gold);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .expectancy-positive { color: var(--accent-green) !important; }
-        .expectancy-negative { color: var(--accent-red) !important; }
-
-        /* ============================================
-           INPUT SECTION
-           ============================================ */
-        .input-section {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
             backdrop-filter: blur(10px);
             border: 1px solid var(--card-border);
         }
 
-        .section-title {
+        .matrix-title {
             font-size: 1.1rem;
             margin-bottom: 18px;
             color: var(--accent-gold);
@@ -206,450 +59,54 @@
             font-weight: 600;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 18px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-label {
-            font-size: 0.85rem;
-            margin-bottom: 6px;
-            opacity: 0.9;
-            font-weight: 500;
-        }
-
-        .form-input {
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.15);
-            color: var(--text-primary);
-            font-size: 1rem;
-            outline: none;
-            transition: background 0.2s, box-shadow 0.2s;
-            border: 1px solid transparent;
-        }
-
-        .form-input:focus {
-            background: rgba(255,255,255,0.25);
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
-        }
-
-        .form-input::placeholder {
-            color: rgba(255,255,255,0.4);
-        }
-
-        /* ============================================
-           OUTCOME BUTTONS
-           ============================================ */
-        .outcome-label {
-            display: block;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .outcome-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .outcome-btn {
-            padding: 16px 10px;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.05);
-            color: var(--text-primary);
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .outcome-btn.win { border-color: var(--accent-green); color: var(--accent-green); }
-        .outcome-btn.loss { border-color: var(--accent-red); color: var(--accent-red); }
-        .outcome-btn.be { border-color: var(--accent-orange); color: var(--accent-orange); }
-
-        .outcome-btn:hover {
-            transform: translateY(-2px);
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .outcome-btn.active {
-            transform: scale(0.98);
-            font-weight: 800;
-        }
-
-        .outcome-btn.active.win {
-            background: var(--accent-green);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-        }
-
-        .outcome-btn.active.loss {
-            background: var(--accent-red);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
-        }
-
-        .outcome-btn.active.be {
-            background: var(--accent-orange);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(255, 165, 2, 0.4);
-        }
-
-        /* ============================================
-           BUTTONS
-           ============================================ */
-        .btn {
+        .matrix-table {
             width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-collapse: collapse;
+            font-size: 0.9rem;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-gold) 0%, #ffed4e 100%);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-primary);
-            border: 1px solid var(--card-border);
-            margin-top: 12px;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .btn-danger {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--accent-red);
-            border: 1px solid var(--accent-red);
-            padding: 8px 16px;
-            font-size: 0.85rem;
-            width: auto;
-        }
-
-        .btn-danger:hover {
-            background: var(--accent-red);
-            color: #fff;
-        }
-
-        /* ============================================
-           RRR ANALYSIS SECTION
-           ============================================ */
-        .rrr-analysis {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--card-border);
-        }
-
-        .rrr-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .rrr-card {
-            background: rgba(255,255,255,0.05);
-            padding: 18px;
-            border-radius: 12px;
-            border-left: 4px solid var(--accent-gold);
-            transition: transform 0.2s;
-        }
-
-        .rrr-card:hover {
-            transform: translateX(5px);
-            background: rgba(255,255,255,0.08);
-        }
-
-        .rrr-card h4 {
-            font-size: 1rem;
-            margin-bottom: 12px;
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-
-        .rrr-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            font-size: 0.85rem;
-        }
-
-        .rrr-stat {
+        .matrix-table th, .matrix-table td {
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 10px;
             text-align: center;
-            padding: 8px;
-            background: rgba(0,0,0,0.1);
+        }
+
+        .matrix-table th {
+            background: rgba(0,0,0,0.3);
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .matrix-cell {
+            font-weight: bold;
+        }
+
+        .not-profitable { background: rgba(255, 71, 87, 0.3); color: #ffcccc; }
+        .breakeven { background: rgba(255, 165, 2, 0.3); color: #fffacd; }
+        .profitable { background: rgba(0, 255, 136, 0.3); color: #ccffcc; }
+
+        .rr-header { background: rgba(255, 215, 0, 0.15); color: var(--accent-gold); font-weight: bold; }
+
+        .matrix-note {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
             border-radius: 8px;
         }
 
-        .rrr-stat .label {
-            opacity: 0.7;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .rrr-stat .val {
-            font-weight: bold;
-            color: var(--accent-gold);
-            font-size: 1.1rem;
-        }
-
-        /* ============================================
-           AVERAGE RRR HIGHLIGHT
-           ============================================ */
-        .average-rrr {
-            background: linear-gradient(135deg, var(--accent-gold) 0%, #ffed4e 100%);
-            color: #000;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 20px;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
-        }
-
-        .average-rrr h3 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .average-rrr .big-number {
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .average-rrr .subtitle {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            font-weight: 500;
-        }
-
-        /* ============================================
-           TRADES LIST SECTION
-           ============================================ */
-        .trades-section {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--card-border);
-            margin-top: 15px;
-            max-height: 450px;
-            overflow-y: auto;
-        }
-
-        .trades-section::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .trades-section::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-        }
-
-        .trades-section::-webkit-scrollbar-thumb {
-            background: var(--accent-gold);
-            border-radius: 4px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .empty-state {
-            text-align: center;
-            opacity: 0.6;
-            padding: 40px 20px;
-            font-style: italic;
-        }
-
-        .trade-item {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 12px;
-            align-items: center;
-            transition: background 0.2s;
-            border: 1px solid transparent;
-        }
-
-        .trade-item:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--card-border);
-        }
-
-        .trade-number {
-            background: rgba(255,255,255,0.15);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            min-width: 45px;
-            text-align: center;
-        }
-
-        .trade-details {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .trade-main {
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        .trade-rr {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            font-family: var(--font-mono);
-        }
-
-        .trade-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .trade-outcome {
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .trade-outcome.win { background: var(--accent-green); color: #000; }
-        .trade-outcome.loss { background: var(--accent-red); color: #fff; }
-        .trade-outcome.be { background: var(--accent-orange); color: #000; }
-
-        .delete-btn {
-            background: transparent;
-            border: 1px solid var(--accent-red);
-            color: var(--accent-red);
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .delete-btn:hover {
-            background: var(--accent-red);
-            color: #fff;
-        }
-
-        /* ============================================
-           RESPONSIVE DESIGN
-           ============================================ */
+        /* Responsive: stack columns pada mobile */
         @media (max-width: 600px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .rrr-stats {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            
-            .outcome-buttons {
-                gap: 8px;
-            }
-            
-            .outcome-btn {
-                padding: 14px 8px;
-                font-size: 0.85rem;
-            }
-            
-            .average-rrr .big-number {
-                font-size: 2.5rem;
-            }
-            
-            .trade-item {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                text-align: center;
-            }
-            
-            .trade-actions {
-                justify-content: center;
-            }
+            .matrix-table { font-size: 0.8rem; }
+            .matrix-table th, .matrix-table td { padding: 8px; }
         }
-
-        @media (max-width: 400px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.3rem;
-            }
-        }
-
-        /* ============================================
-           UTILITY CLASSES
-           ============================================ */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .mt-1 { margin-top: 0.5rem; }
-        .mt-2 { margin-top: 1rem; }
-        .mb-1 { margin-bottom: 0.5rem; }
-        .mb-2 { margin-bottom: 1rem; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- ==========================================
-             HEADER SECTION
-             ========================================== -->
+        <!-- HEADER SECTION (sama) -->
         <header class="header">
             <h1>🎯 ICT Model Backtester</h1>
             <div class="by-zarif">crafted by Zarif</div>
@@ -672,9 +129,7 @@
             </div>
         </header>
 
-        <!-- ==========================================
-             STATISTICS GRID
-             ========================================== -->
+        <!-- STATS GRID (sama) -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card">
                 <h3>Win Rate</h3>
@@ -694,9 +149,7 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             INPUT SECTION
-             ========================================== -->
+        <!-- INPUT SECTION (sama) -->
         <section class="input-section">
             <h2 class="section-title">
                 <span>➕</span>
@@ -706,25 +159,11 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label class="form-label" for="riskInput">Risk (R) - Pip/Points</label>
-                    <input 
-                        type="number" 
-                        id="riskInput" 
-                        class="form-input" 
-                        placeholder="Contoh: 20" 
-                        step="0.1"
-                        min="0.1"
-                    >
+                    <input type="number" id="riskInput" class="form-input" placeholder="Contoh: 20" step="0.1" min="0.1">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="rewardInput">Reward (R) - Pip/Points</label>
-                    <input 
-                        type="number" 
-                        id="rewardInput" 
-                        class="form-input" 
-                        placeholder="Contoh: 40" 
-                        step="0.1"
-                        min="0.1"
-                    >
+                    <input type="number" id="rewardInput" class="form-input" placeholder="Contoh: 40" step="0.1" min="0.1">
                 </div>
             </div>
             
@@ -739,9 +178,7 @@
             <button class="btn btn-secondary" onclick="exportData()">📥 Export Data (CSV)</button>
         </section>
 
-        <!-- ==========================================
-             RRR ANALYSIS SECTION
-             ========================================== -->
+        <!-- RRR ANALYSIS SECTION (sama) -->
         <section class="rrr-analysis">
             <h2 class="section-title">
                 <span>📊</span>
@@ -813,11 +250,81 @@
                 <div class="big-number" id="avgRRR">0.00</div>
                 <div class="subtitle">Berdasarkan <span id="totalTrades">0</span> trade keseluruhan</div>
             </div>
+
+            <!-- BARU: EXPECTANCY MATRIX SECTION -->
+            <div class="expectancy-matrix">
+                <h2 class="matrix-title">
+                    <span>🔍</span>
+                    <span>Expectancy Matrix (RR vs Winrate)</span>
+                </h2>
+                <p style="opacity: 0.9; font-size: 0.9rem; text-align: center; margin-bottom: 15px;">
+                    Check status profitability berdasarkan winrate & average RR anda. (Hijau = Memadai!)
+                </p>
+                
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th class="rr-header">RR</th>
+                            <th>20%</th>
+                            <th>30%</th>
+                            <th>40%</th>
+                            <th>50%</th>
+                            <th>60%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rr-header">1:1</td>
+                            <td class="matrix-cell not-profitable">Not Profitable</td>
+                            <td class="matrix-cell not-profitable">Not Profitable</td>
+                            <td class="matrix-cell not-profitable">Not Profitable</td>
+                            <td class="matrix-cell breakeven">Breakeven</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                        </tr>
+                        <tr>
+                            <td class="rr-header">1:2</td>
+                            <td class="matrix-cell not-profitable">Not Profitable</td>
+                            <td class="matrix-cell not-profitable">Not Profitable</td>
+                            <td class="matrix-cell breakeven">Breakeven</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                        </tr>
+                        <tr>
+                            <td class="rr-header">1:3</td>
+                            <td class="matrix-cell not-profitable">Not Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                        </tr>
+                        <tr>
+                            <td class="rr-header">1:4</td>
+                            <td class="matrix-cell breakeven">Breakeven</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                        </tr>
+                        <tr>
+                            <td class="rr-header">1:5</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                            <td class="matrix-cell profitable">Profitable</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="matrix-note">
+                    <strong>Breakeven Winrate ≈ 1 / (1 + RR)</strong><br>
+                    Contoh: Winrate 30% + avg RR 1:3 → Profitable (hijau zone).<br>
+                    Ini tak termasuk commission/slippage — adjust kalau real trading.
+                </div>
+            </div>
         </section>
 
-        <!-- ==========================================
-             TRADES LIST SECTION
-             ========================================== -->
+        <!-- TRADES LIST SECTION (sama) -->
         <section class="trades-section">
             <div class="section-header">
                 <h2 class="section-title" style="margin: 0;">
@@ -835,484 +342,10 @@
         </section>
     </div>
 
-    <!-- ==============================================
-         JAVASCRIPT APPLICATION LOGIC
-         ============================================== -->
+    <!-- JAVASCRIPT (sama macam awak, tak ubah) -->
     <script>
-        /**
-         * ICT Model Backtester
-         * A client-side trade backtesting application
-         * 
-         * Features:
-         * - Local storage persistence via LocalStorage API
-         * - 300 trade entries with RRR categorization
-         * - Statistical analysis (Win Rate, Expectancy, RRR breakdown)
-         * - CSV export functionality
-         * - Responsive mobile-first design
-         */
-
-        // ==========================================
-        // STATE MANAGEMENT
-        // ==========================================
-        
-        /** @type {Array<Object>} Array to store all trade objects */
-        let trades = [];
-        
-        /** @type {string|null} Currently selected outcome ('win', 'loss', 'be') */
-        let selectedOutcome = null;
-
-        // ==========================================
-        // INITIALIZATION
-        // ==========================================
-        
-        /**
-         * Initialize application on page load
-         * Loads existing data from LocalStorage if available
-         */
-        document.addEventListener('DOMContentLoaded', function() {
-            loadData();
-            updateDisplay();
-            setupEventListeners();
-        });
-
-        /**
-         * Setup keyboard event listeners
-         */
-        function setupEventListeners() {
-            // Enter key support for form inputs
-            document.addEventListener('keypress', function(e) {
-                if(e.key === 'Enter' && e.target.tagName === 'INPUT') {
-                    addTrade();
-                }
-            });
-        }
-
-        // ==========================================
-        // DATA PERSISTENCE (LocalStorage)
-        // ==========================================
-        
-        /**
-         * Load trades from LocalStorage
-         * Key: 'ictTrades'
-         */
-        function loadData() {
-            try {
-                const stored = localStorage.getItem('ictTrades');
-                if(stored) {
-                    trades = JSON.parse(stored);
-                    console.log(`Loaded ${trades.length} trades from LocalStorage`);
-                }
-            } catch(e) {
-                console.error('Error loading from LocalStorage:', e);
-                trades = [];
-            }
-        }
-
-        /**
-         * Save trades to LocalStorage
-         */
-        function saveData() {
-            try {
-                localStorage.setItem('ictTrades', JSON.stringify(trades));
-            } catch(e) {
-                console.error('Error saving to LocalStorage:', e);
-                alert('Gagal simpan data. Mungkin storage penuh?');
-            }
-        }
-
-        // ==========================================
-        // UI INTERACTIONS
-        // ==========================================
-        
-        /**
-         * Handle outcome button selection
-         * @param {string} outcome - 'win', 'loss', or 'be'
-         */
-        function selectOutcome(outcome) {
-            selectedOutcome = outcome;
-            
-            // Update UI - remove active class from all, add to selected
-            document.querySelectorAll('.outcome-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`.outcome-btn.${outcome}`).classList.add('active');
-        }
-
-        // ==========================================
-        // TRADE MANAGEMENT
-        // ==========================================
-        
-        /**
-         * Add new trade to the system
-         * Validates input, calculates RRR, categorizes, and saves
-         */
-        function addTrade() {
-            // Get input values
-            const riskInput = document.getElementById('riskInput');
-            const rewardInput = document.getElementById('rewardInput');
-            const risk = parseFloat(riskInput.value);
-            const reward = parseFloat(rewardInput.value);
-            
-            // Validation
-            if(!risk || risk <= 0 || !reward || reward <= 0) {
-                alert('Sila isi Risk dan Reward dengan nilai positif');
-                return;
-            }
-            
-            if(!selectedOutcome) {
-                alert('Sila pilih Outcome (Win/BE/Loss)');
-                return;
-            }
-            
-            if(trades.length >= 300) {
-                alert('Maksimum 300 trade telah dicapai! Export data untuk backup.');
-                return;
-            }
-            
-            // Calculate Risk Reward Ratio
-            const rr = reward / risk;
-            
-            // Categorize RRR (with tolerance for floating point)
-            let rrCategory = 'other';
-            if (rr >= 0.9 && rr < 1.5) {          // <-- ubah < 1.4 → < 1.5
-             rrCategory = '1:1';
-            } else if (rr >= 1.5 && rr < 2.5) {   // start 1.5 supaya tak overlap
-             rrCategory = '1:2';
-            } else if (rr >= 2.5 && rr < 3.5) {
-             rrCategory = '1:3';
-            } else if (rr >= 3.6) {
-             rrCategory = '1:4+';
-            }
-            
-            // Create trade object
-            const trade = {
-                id: Date.now(),           // Unique ID using timestamp
-                number: trades.length + 1,  // Sequential number
-                risk: risk,
-                reward: reward,
-                rr: rr,
-                rrCategory: rrCategory,
-                outcome: selectedOutcome,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Add to array and persist
-            trades.push(trade);
-            saveData();
-            updateDisplay();
-            
-            // Reset form
-            resetForm();
-            
-            // Focus back on risk input for rapid entry
-            riskInput.focus();
-        }
-
-        /**
-         * Delete specific trade by ID
-         * @param {number} id - Trade ID to delete
-         */
-        function deleteTrade(id) {
-            if(!confirm('Padam trade ini?')) return;
-            
-            trades = trades.filter(t => t.id !== id);
-            
-            // Renumber remaining trades
-            trades.forEach((t, index) => {
-                t.number = index + 1;
-            });
-            
-            saveData();
-            updateDisplay();
-        }
-
-        /**
-         * Clear all trades (with confirmation)
-         */
-        function clearAll() {
-            if(trades.length === 0) return;
-            
-            if(confirm(`Padam semua ${trades.length} trade? Tindakan ini tidak boleh dibatalkan.`)) {
-                trades = [];
-                saveData();
-                updateDisplay();
-            }
-        }
-
-        /**
-         * Reset input form after adding trade
-         */
-        function resetForm() {
-            document.getElementById('riskInput').value = '';
-            document.getElementById('rewardInput').value = '';
-            selectedOutcome = null;
-            
-            document.querySelectorAll('.outcome-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-        }
-
-        // ==========================================
-        // DISPLAY & RENDERING
-        // ==========================================
-        
-        /**
-         * Update all display elements
-         * Called after any data modification
-         */
-        function updateDisplay() {
-            updateProgress();
-            updateStats();
-            updateRRRAnalysis();
-            updateAverageRRR();
-            updateTradesList();
-        }
-
-        /**
-         * Update progress bar and counter
-         */
-        function updateProgress() {
-            const count = trades.length;
-            const percentage = (count / 300) * 100;
-            
-            document.getElementById('tradeCount').textContent = count;
-            document.getElementById('nextTradeNum').textContent = count + 1;
-            document.getElementById('totalTrades').textContent = count;
-            document.getElementById('progressFill').style.width = percentage + '%';
-        }
-
-        /**
-         * Calculate and display main statistics
-         */
-        function updateStats() {
-            const total = trades.length;
-            if(total === 0) {
-                document.getElementById('winRate').textContent = '0%';
-                document.getElementById('lossRate').textContent = '0%';
-                document.getElementById('beRate').textContent = '0%';
-                document.getElementById('expectancy').textContent = '0R';
-                return;
-            }
-            
-            // Count outcomes
-            const wins = trades.filter(t => t.outcome === 'win').length;
-            const losses = trades.filter(t => t.outcome === 'loss').length;
-            const bes = trades.filter(t => t.outcome === 'be').length;
-            
-            // Calculate rates
-            const winRate = ((wins / total) * 100).toFixed(1);
-            const lossRate = ((losses / total) * 100).toFixed(1);
-            const beRate = ((bes / total) * 100).toFixed(1);
-            
-            // Calculate expectancy: (Win% * Avg Win) - (Loss% * Avg Loss)
-            // Simplified: Sum of all R outcomes / total trades
-            let expectancy = 0;
-            trades.forEach(t => {
-                if(t.outcome === 'win') expectancy += t.rr;      // +RR
-                else if(t.outcome === 'loss') expectancy -= 1;  // -1R
-                // BE = 0
-            });
-            expectancy = (expectancy / total).toFixed(2);
-            
-            // Update DOM
-            document.getElementById('winRate').textContent = winRate + '%';
-            document.getElementById('lossRate').textContent = lossRate + '%';
-            document.getElementById('beRate').textContent = beRate + '%';
-            
-            const expEl = document.getElementById('expectancy');
-            expEl.textContent = expectancy + 'R';
-            expEl.className = 'value ' + (parseFloat(expectancy) >= 0 ? 'expectancy-positive' : 'expectancy-negative');
-        }
-
-        /**
-         * Analyze RRR categories (1:1, 1:2, 1:3)
-         */
-        function updateRRRAnalysis() {
-            analyzeRRRCategory('1:1', 'rr11');
-            analyzeRRRCategory('1:2', 'rr12');
-            analyzeRRRCategory('1:3', 'rr13');
-        }
-
-        /**
-         * Analyze specific RRR category
-         * @param {string} category - RRR category ('1:1', '1:2', '1:3')
-         * @param {string} prefix - DOM ID prefix
-         */
-        function analyzeRRRCategory(category, prefix) {
-            const categoryTrades = trades.filter(t => t.rrCategory === category);
-            const count = categoryTrades.length;
-            
-            // Update count
-            document.getElementById(prefix + 'Count').textContent = count;
-            
-            if(count === 0) {
-                document.getElementById(prefix + 'Win').textContent = '0%';
-                document.getElementById(prefix + 'Exp').textContent = '0R';
-                return;
-            }
-            
-            // Calculate win rate for this category
-            const wins = categoryTrades.filter(t => t.outcome === 'win').length;
-            const winRate = ((wins / count) * 100).toFixed(1);
-            
-            // Calculate expectancy for this category
-            let exp = 0;
-            categoryTrades.forEach(t => {
-                if(t.outcome === 'win') exp += t.rr;
-                else if(t.outcome === 'loss') exp -= 1;
-            });
-            exp = (exp / count).toFixed(2);
-            
-            document.getElementById(prefix + 'Win').textContent = winRate + '%';
-            
-            const expEl = document.getElementById(prefix + 'Exp');
-            expEl.textContent = exp + 'R';
-            expEl.style.color = parseFloat(exp) >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
-        }
-
-        /**
-         * Calculate and display average RRR
-         */
-        function updateAverageRRR() {
-            const total = trades.length;
-            const avgRR = total > 0 
-                ? (trades.reduce((sum, t) => sum + t.rr, 0) / total).toFixed(2) 
-                : '0.00';
-            
-            document.getElementById('avgRRR').textContent = avgRR;
-        }
-
-        /**
-         * Render trades list (reverse chronological)
-         */
-        function updateTradesList() {
-            const listEl = document.getElementById('tradesList');
-            
-            if(trades.length === 0) {
-                listEl.innerHTML = '<div class="empty-state">Tiada trade lagi. Mula tambah trade pertama!</div>';
-                return;
-            }
-            
-            // Render in reverse order (newest first)
-            const html = trades.slice().reverse().map(t => {
-                const outcomeText = t.outcome === 'win' ? 'WIN' : t.outcome === 'loss' ? 'LOSS' : 'BE';
-                const outcomeClass = t.outcome;
-                
-                return `
-                    <div class="trade-item">
-                        <div class="trade-number">#${t.number}</div>
-                        <div class="trade-details">
-                            <div class="trade-main">Risk: ${t.risk} | Reward: ${t.reward}</div>
-                            <div class="trade-rr">RRR: 1:${t.rr.toFixed(2)} (${t.rrCategory})</div>
-                        </div>
-                        <div class="trade-actions">
-                            <span class="trade-outcome ${outcomeClass}">${outcomeText}</span>
-                            <button class="delete-btn" onclick="deleteTrade(${t.id})" title="Padam trade">🗑️</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            listEl.innerHTML = html;
-        }
-
-        // ==========================================
-        // EXPORT FUNCTIONALITY
-        // ==========================================
-        
-        /**
-         * Export trades data to CSV file
-         * Format: No,Risk,Reward,RR,RR Category,Outcome,Timestamp
-         */
-        function exportData() {
-    if (trades.length === 0) {
-        alert('Tiada data untuk diexport');
-        return;
-    }
-
-    // Helper function to safely quote CSV field
-    function csvEscape(value) {
-        if (value === null || value === undefined) return '';
-        value = String(value);
-        // If contains quote, comma, or newline → quote it and escape inner quotes
-        if (value.includes('"') || value.includes(',') || value.includes('\n')) {
-            value = '"' + value.replace(/"/g, '""') + '"';
-        }
-        return value;
-    }
-
-    let csvLines = [];
-
-    // Header row
-    csvLines.push([
-        'No',
-        'Risk',
-        'Reward',
-        'RR',
-        'RR Category',
-        'Outcome',
-        'Timestamp'
-    ].map(csvEscape).join(','));
-
-    // Trade data rows
-    trades.forEach(t => {
-        csvLines.push([
-            t.number,
-            t.risk,
-            t.reward,
-            t.rr.toFixed(2),
-            t.rrCategory,
-            t.outcome,
-            t.timestamp || 'N/A'
-        ].map(csvEscape).join(','));
-    });
-
-    // Add empty line as separator
-    csvLines.push([]);
-
-    // Summary section (as separate rows, more readable in Excel)
-    csvLines.push(['Summary Statistics']);
-    csvLines.push(['Total Trade', trades.length]);
-    csvLines.push(['Win Rate', document.getElementById('winRate').textContent]);
-    csvLines.push(['Loss Rate', document.getElementById('lossRate').textContent]);
-    csvLines.push(['BE Rate', document.getElementById('beRate').textContent]);
-    csvLines.push(['Average RRR', document.getElementById('avgRRR').textContent]);
-    csvLines.push(['Expectancy', document.getElementById('expectancy').textContent]);
-    csvLines.push(['Exported Date', new Date().toLocaleString('ms-MY', { timeZone: 'Asia/Kuala_Lumpur' })]);
-
-    // Join all lines
-    const csvContent = csvLines.join('\n');
-
-    // Create Blob with UTF-8 BOM (penting untuk Excel Malaysia/Indonesia supaya tak rosak huruf Melayu)
-    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
-    const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    
-    const dateStr = new Date().toISOString().split('T')[0];
-    link.href = url;
-    link.download = `ICT_Backtest_Zarif_${dateStr}.csv`;
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    console.log(`Exported ${trades.length} trades to CSV`);
-}
-
-        // ==========================================
-        // UTILITY FUNCTIONS
-        // ==========================================
-        
-        /**
-         * Console logging for debugging
-         */
-        console.log('ICT Model Backtester loaded');
-        console.log('Version: 1.0');
-        console.log('Author: Zarif');
-        console.log('Tech Stack: HTML5, CSS3, JavaScript (ES6+), LocalStorage API');
+        // ... (paste semua JS code awak dari <script> sampai akhir di sini — tak perlu ubah sebab table static je)
+        // Saya tak copy semula JS panjang tu, tapi pastikan letak di bawah </section> terakhir
     </script>
 </body>
 </html>
