@@ -3,279 +3,547 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICT Backtester PRO</title>
-
+<title>ICT Macro Journal</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-body{
-    font-family:sans-serif;
-    background:#0f172a;
-    color:#fff;
-    padding:15px;
-}
-.container{max-width:900px;margin:auto}
+    /* full-page live background */
+    #live-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: linear-gradient(120deg, #0f172a, #080b12, #111827);
+      animation: bgShift 15s ease infinite;
+      filter: saturate(1.2) contrast(1.1);
+    }
 
-/* CARD */
-.card{
-    background:rgba(255,255,255,0.05);
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:12px;
-}
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-/* GRID */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
+    .live-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
+      animation: floatUp 10s linear infinite;
+      opacity: 0.7;
+      mix-blend-mode: screen;
+    }
 
-.big{
-    font-size:20px;
-    font-weight:bold;
-}
+    @keyframes floatUp {
+      0% { transform: translateY(20px) scale(0.8); opacity: 0; }
+      10% { opacity: 0.35; }
+      50% { transform: translateY(-40px) scale(1.1); opacity: 0.45; }
+      100% { transform: translateY(-140px) scale(0.9); opacity: 0; }
+    }
 
-/* INPUT */
-input{
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    margin:5px;
-}
+    .app-wrap {
+      position: relative;
+      z-index: 2;
+    }
 
-/* BUTTON */
-button{
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    margin:3px;
-}
-
-.win{background:#00ff88;color:#000}
-.loss{background:#ff4757;color:#fff}
-.be{background:#ffa502;color:#000}
-
-/* HEATMAP */
-.heatmap{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:5px;
-}
-
-.cell{
-    aspect-ratio:1;
-    border-radius:6px;
-    font-size:11px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-}
-
-.winCell{background:#00ff88;color:#000}
-.lossCell{background:#ff4757}
-.beCell{background:#ffa502;color:#000}
-.empty{background:rgba(255,255,255,0.05)}
-
-.tooltip{
-    display:none;
-    position:absolute;
-    bottom:110%;
-    background:#000;
-    padding:6px;
-    border-radius:5px;
-    font-size:10px;
-}
-
-.cell:hover .tooltip{
-    display:block;
-}
-</style>
+    .rrr-card { cursor:pointer; background:#1f2937; border:1px solid #334155; border-radius:12px; padding:12px; transition:all .25s; }
+    .rrr-card:hover { transform:translateY(-2px); border-color:#f59e0b; box-shadow:0 8px 20px rgba(252,211,77,.28); }
+    .rrr-card.active { border-color:#22c55e; background:#152132; box-shadow:0 12px 28px rgba(34,197,94,.35); }
+    .rrr-title { font-weight:600; letter-spacing:.02em; }
+    .rrr-line { height:8px; border-radius:999px; background: #334155; margin-top:6px; overflow:hidden; }
+    .rrr-progress { height:100%; border-radius:999px; background: linear-gradient(90deg,#22c55e,#14b8a6); }
+    .rrr-badge { font-size:.72rem; padding:.15rem .5rem; border-radius:999px; }
+    .rrr-badge-win { background:#04785711; color:#22c55e; }
+    .rrr-badge-loss { background:#7f1d1d11; color:#ef4444; }
+  </style>
 </head>
 
-<body>
-<div class="container">
+<body class="bg-slate-900 text-white p-4">
+  <div id="live-bg">
+    <!-- optional particle elements -->
+    <span class="live-dot" style="left: 10%; top: 80%; animation-duration: 13s; animation-delay: 0s;"></span>
+    <span class="live-dot" style="left: 28%; top: 64%; animation-duration: 11s; animation-delay: 0.8s;"></span>
+    <span class="live-dot" style="left: 45%; top: 85%; animation-duration: 16s; animation-delay: 0.4s;"></span>
+    <span class="live-dot" style="left: 65%; top: 75%; animation-duration: 12s; animation-delay: 0.2s;"></span>
+    <span class="live-dot" style="left: 82%; top: 78%; animation-duration: 14s; animation-delay: 0.6s;"></span>
+  </div>
 
-<h2>📊 ICT Backtester PRO</h2>
+  <div class="app-wrap max-w-6xl mx-auto space-y-4">
+
+<!-- HEADER -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+<div>
+<h1 class="text-4xl font-bold text-yellow-400">📊 ICT Macro Journal</h1>
+<p class="text-sm opacity-70 mt-1 flex gap-2 flex-wrap">
+<span>Backtester / Forwardtest</span>
+<span>•</span>
+<span>Dev: Zarif (Reef)</span>
+</p>
+<div class="flex gap-2 mt-2 text-xs flex-wrap">
+<span class="flex items-center gap-1">🔧 Built with <span class="font-semibold">HTML</span></span>
+<span class="flex items-center gap-1">🎨 <span class="font-semibold">CSS</span></span>
+<span class="flex items-center gap-1">⚡ <span class="font-semibold">JavaScript</span></span>
+</div>
+</div>
+
+<div class="flex gap-2">
+<button onclick="downloadCSV()" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm">
+📥 Download CSV
+</button>
+<button onclick="resetAllTrades()" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;">
+🔄 Reset (100+)
+</button>
+</div>
+</div>
+
+<!-- INFO BANNER -->
+<div class="bg-blue-900/30 border border-blue-700 rounded-xl p-4 space-y-2">
+<p class="font-semibold text-blue-300">ℹ️ Information</p>
+<ul class="text-xs opacity-90 space-y-1 ml-4">
+<li>✓ Ini adalah <span class="font-semibold">Static Website</span> - data hanya disimpan dalam device anda</li>
+<li>✓ Data akan hilang jika browser cache dibersihkan atau refresh page tanpa backup</li>
+<li>✓ Gunakan tombol <span class="font-semibold">📥 Download CSV</span> untuk backup data anda</li>
+<li>✓ Reset button akan muncul apabila total trades mencapai 100+</li>
+</ul>
+</div>
 
 <!-- STATS -->
-<div class="card grid">
-<div>
-Winrate<br>
-<span id="winrate" class="big">0%</span>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+<p class="text-sm opacity-70">Total Trades</p>
+<p id="total" class="text-2xl font-bold">0</p>
 </div>
 
-<div>
-Expectancy<br>
-<span id="exp" class="big">0R</span>
+<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+<p class="text-sm opacity-70">Winrate</p>
+<p id="winrate" class="text-2xl font-bold">0%</p>
 </div>
+
+<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+<p class="text-sm opacity-70">Expectancy</p>
+<p id="exp" class="text-2xl font-bold">0R</p>
+</div>
+
+<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+<p class="text-sm opacity-70">Total PNL</p>
+<p id="pnl" class="text-2xl font-bold text-green-400">$0</p>
+</div>
+</div>
+
+<!-- NEW PROP-FIRM STATS -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-1">
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Max Drawdown</p>
+    <p id="maxDrawdown" class="text-2xl font-bold text-orange-400">0%</p>
+  </div>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Consec Win / Loss</p>
+    <p id="consec" class="text-2xl font-bold text-cyan-300">0 / 0</p>
+  </div>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Avg Monthly Return</p>
+    <p id="avgMonthly" class="text-2xl font-bold text-emerald-400">0%</p>
+  </div>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Prop Firm Eligibility</p>
+    <p id="propStatus" class="text-2xl font-bold text-yellow-300">-</p>
+  </div>
 </div>
 
 <!-- INPUT -->
-<div class="card">
-<input id="risk" placeholder="Risk (contoh 20)">
-<input id="reward" placeholder="Reward (contoh 40)">
+<div class="bg-slate-800 p-4 rounded-xl space-y-3 border border-slate-700">
 
-<br><br>
+<div class="flex gap-2">
+<input id="risk" placeholder="Risk (Points)" type="number" class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors">
+<input id="reward" placeholder="Reward (Points)" type="number" class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors">
+</div>
 
-<button class="win" onclick="setOutcome('win')">WIN</button>
-<button class="be" onclick="setOutcome('be')">BE</button>
-<button class="loss" onclick="setOutcome('loss')">LOSS</button>
+<div class="flex gap-3">
+<button onclick="setOutcome('win')" class="flex-1 relative overflow-hidden group px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95">
+  <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-emerald-500/50"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  <span class="relative flex items-center justify-center gap-2 text-black">
+    <span class="text-lg">✅</span> WIN
+  </span>
+</button>
 
-<br><br>
+<button onclick="setOutcome('be')" class="flex-1 relative overflow-hidden group px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95">
+  <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-amber-500/50"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  <span class="relative flex items-center justify-center gap-2 text-black">
+    <span class="text-lg">➖</span> BE
+  </span>
+</button>
 
-<button onclick="addTrade()">➕ Add Trade</button>
+<button onclick="setOutcome('loss')" class="flex-1 relative overflow-hidden group px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95">
+  <div class="absolute inset-0 bg-gradient-to-r from-rose-500 to-red-600 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-rose-500/50"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-rose-600 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  <span class="relative flex items-center justify-center gap-2 text-black">
+    <span class="text-lg">❌</span> LOSS
+  </span>
+</button>
+</div>
+
+<button onclick="addTrade()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-yellow-500/50 transition-all">
+➕ Add Trade
+</button>
+
 </div>
 
 <!-- RRR -->
-<div class="card">
-<h3>RRR Analysis</h3>
-<div id="rrr"></div>
+<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+  <h3 class="font-semibold mb-3 text-lg">📈 Risk-Reward-Ratio Analysis</h3>
+  <div id="rrr" class="grid grid-cols-1 gap-3"></div>
 </div>
 
-<!-- HEATMAP -->
-<div class="card">
-<h3>📅 Trade Heatmap</h3>
-<div id="heatmap" class="heatmap"></div>
+<!-- CALENDAR HEATMAP -->
+<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-semibold text-lg">📅 Trading Calendar</h3>
+<div class="flex gap-2">
+<button onclick="prevMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">←</button>
+<span id="monthLabel" class="font-semibold text-sm min-w-40 text-center"></span>
+<button onclick="nextMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">→</button>
+</div>
+</div>
+
+<div class="grid grid-cols-7 gap-2 mb-4">
+<div class="text-center font-semibold text-xs opacity-70">Sun</div>
+<div class="text-center font-semibold text-xs opacity-70">Mon</div>
+<div class="text-center font-semibold text-xs opacity-70">Tue</div>
+<div class="text-center font-semibold text-xs opacity-70">Wed</div>
+<div class="text-center font-semibold text-xs opacity-70">Thu</div>
+<div class="text-center font-semibold text-xs opacity-70">Fri</div>
+<div class="text-center font-semibold text-xs opacity-70">Sat</div>
+</div>
+
+<div id="calendar" class="grid grid-cols-7 gap-2"></div>
+
+<div class="mt-4 flex gap-3 text-xs justify-center flex-wrap">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 bg-gray-500 rounded"></div>
+<span>No Trades</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 bg-red-500 rounded"></div>
+<span>Loss Day</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 bg-yellow-500 rounded"></div>
+<span>Mixed</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 bg-green-500 rounded"></div>
+<span>Win Day</span>
+</div>
+</div>
+</div>
+
 </div>
 
 </div>
 
 <script>
-let trades=[]
-let outcome=null
+let trades = []
+let outcome = null
+let currentMonth = new Date()
 
-function setOutcome(o){
-    outcome=o
+const NQ_MULTIPLIER = 20 // 1 point = $20 per contract
+
+function setOutcome(o) { outcome = o }
+
+function addTrade() {
+  let r = parseFloat(risk.value)
+  let rw = parseFloat(reward.value)
+  
+  if(!r || !rw || !outcome) return alert("Isi semua field")
+  
+  let rr = rw / r
+  let cat = "1:1"
+  if(rr >= 1.5 && rr < 2.5) cat = "1:2"
+  else if(rr >= 2.5) cat = "1:3+"
+  
+  let pnlPoints = outcome === 'win' ? rw : outcome === 'loss' ? -r : 0
+  
+  trades.push({
+    rr,
+    cat,
+    outcome,
+    time: new Date(),
+    pnlPoints,
+    risk: r,
+    reward: rw
+  })
+  
+  risk.value = ''
+  reward.value = ''
+  outcome = null
+  update()
 }
 
-function addTrade(){
-    let r=parseFloat(document.getElementById("risk").value)
-    let rw=parseFloat(document.getElementById("reward").value)
+function update() {
+  calcStats()
+  calcRRR()
+  drawCalendar()
+  updateResetButton()
+}
 
-    if(!r || !rw || !outcome){
-        alert("Isi semua data")
-        return
+function calcStats() {
+  let total = trades.length
+  document.getElementById("total").innerText = total
+  if(total === 0) {
+    document.getElementById("maxDrawdown").innerText = "0%"
+    document.getElementById("consec").innerText = "0 / 0"
+    document.getElementById("avgMonthly").innerText = "0%"
+    document.getElementById("propStatus").innerText = "No Trade"
+    return
+  }
+
+  let wins = trades.filter(t => t.outcome === "win").length
+  let winrate = (wins / total * 100).toFixed(1)
+
+  let exp = 0
+  trades.forEach(t => {
+    if(t.outcome === "win") exp += t.rr
+    if(t.outcome === "loss") exp -= 1
+  })
+  exp = (exp / total).toFixed(2)
+
+  let totalPnl = trades.reduce((sum, t) => sum + t.pnlPoints, 0)
+  let pnlDollar = totalPnl * NQ_MULTIPLIER
+
+  // drawdown & streak
+  let capStart = 10000
+  let equity = capStart
+  let peak = equity
+  let maxDD = 0
+  let winStreak = 0, lossStreak = 0, maxWinStreak = 0, maxLossStreak = 0
+  trades.forEach(t => {
+    let tradeUSD = t.pnlPoints * NQ_MULTIPLIER
+    equity += tradeUSD
+    if(equity > peak) peak = equity
+    maxDD = Math.max(maxDD, ((peak - equity) / peak) * 100)
+
+    if(t.outcome === "win") {
+      winStreak += 1
+      lossStreak = 0
+      maxWinStreak = Math.max(maxWinStreak, winStreak)
+    } else if(t.outcome === "loss") {
+      lossStreak += 1
+      winStreak = 0
+      maxLossStreak = Math.max(maxLossStreak, lossStreak)
+    } else {
+      winStreak = 0
+      lossStreak = 0
     }
+  })
 
-    let rr=rw/r
+  let months = new Set(trades.map(t => `${t.time.getFullYear()}-${t.time.getMonth()}`)).size
+  let avgMonthly = months > 0 ? ((pnlDollar / capStart) / months * 100).toFixed(2) : "0.00"
 
-    let cat="1:1"
-    if(rr>=1.5 && rr<2.5) cat="1:2"
-    else if(rr>=2.5) cat="1:3+"
+  let propWinReq = winrate >= 55
+  let propDdReq = maxDD <= 3
+  let propMthReq = avgMonthly >= 6
+  let propGood = (propWinReq && propDdReq && propMthReq)
 
-    trades.push({
-        rr:rr,
-        cat:cat,
-        outcome:outcome,
-        time:new Date()
-    })
+  document.getElementById("winrate").innerText = winrate + "%"
+  document.getElementById("exp").innerText = exp + "R"
+  let pnlColor = pnlDollar >= 0 ? "text-green-400" : "text-red-400"
+  document.getElementById("pnl").innerHTML = `<span class="${pnlColor}">${pnlDollar >= 0 ? '+' : ''}$${pnlDollar}</span>`
 
-    update()
+  document.getElementById("maxDrawdown").innerText = maxDD.toFixed(2) + "%"
+  document.getElementById("consec").innerText = `${maxWinStreak} / ${maxLossStreak}`
+  document.getElementById("avgMonthly").innerText = avgMonthly + "%"
+  document.getElementById("propStatus").innerText = propGood ? "✅ Eligible" : "❌ Not Yet"
+
+  // store for CSV
+  calcStats.__cached = { total, winrate, exp, totalPnl, pnlDollar, maxDD, maxWinStreak, maxLossStreak, avgMonthly, propGood }
 }
 
-function update(){
-    calcStats()
-    calcRRR()
-    drawHeatmap()
+function profitability(wr, rr) {
+  wr /= 100
+  let loss = 1 - wr
+  let e = (wr * rr) - loss
+  
+  if(e > 0) return "🟢 Profitable"
+  if(e === 0) return "🟡 BE"
+  return "🔴 Not Profitable"
 }
 
-function calcStats(){
-    let total=trades.length
-    if(total===0)return
+function calcRRR() {
+  if (trades.length === 0) {
+    rrr.innerHTML = '<p class="opacity-70">Tambah trades untuk analisis</p>'
+    return
+  }
 
-    let wins=trades.filter(t=>t.outcome==="win").length
+  const categories = [
+    { key: "1:1", rr: 1 },
+    { key: "1:2", rr: 2 },
+    { key: "1:3+", rr: 3 },
+  ]
 
-    let winrate=(wins/total*100).toFixed(1)
+  let html = ""
+  categories.forEach((c) => {
+    let arr = trades.filter((t) => t.cat === c.key)
+    let total = arr.length
+    let wins = arr.filter((t) => t.outcome === "win").length
+    let winrate = total ? ((wins / total) * 100).toFixed(1) : 0
+    let prof = total ? profitability(winrate, c.rr) : "N/A"
+    let bar = total ? Math.min(100, winrate) : 0
 
-    let exp=0
-    trades.forEach(t=>{
-        if(t.outcome==="win") exp+=t.rr
-        if(t.outcome==="loss") exp-=1
-    })
-
-    exp=(exp/total).toFixed(2)
-
-    document.getElementById("winrate").innerText=winrate+"%"
-    document.getElementById("exp").innerText=exp+"R"
-}
-
-function profitability(wr, rr){
-    wr = wr / 100
-    let loss = 1 - wr
-    let e = (wr * rr) - loss
-
-    if(e > 0) return "✅ Profitable"
-    if(e === 0) return "⚖️ Break Even"
-    return "❌ Not Profitable"
-}
-
-function calcRRR(){
-    let html=""
-
-    ;["1:1","1:2","1:3+"].forEach(c=>{
-        let arr=trades.filter(t=>t.cat===c)
-        if(arr.length===0)return
-
-        let wins=arr.filter(t=>t.outcome==="win").length
-        let wr=(wins/arr.length*100).toFixed(1)
-
-        let rrVal = c==="1:1" ? 1 : c==="1:2" ? 2 : 3
-
-        html += `
-        ${c} | WR ${wr}% | ${profitability(wr, rrVal)}<br>
-        `
-    })
-
-    document.getElementById("rrr").innerHTML=html
-}
-
-function drawHeatmap(){
-    let map={}
-
-    trades.forEach(t=>{
-        let d=t.time.toISOString().split("T")[0]
-        if(!map[d]) map[d]=[]
-        map[d].push(t)
-    })
-
-    let today=new Date()
-    let html=""
-
-    for(let i=34;i>=0;i--){
-        let d=new Date()
-        d.setDate(today.getDate()-i)
-
-        let key=d.toISOString().split("T")[0]
-
-        if(!map[key]){
-            html+=`<div class="cell empty"></div>`
-            continue
-        }
-
-        let day=map[key]
-
-        let w=day.filter(x=>x.outcome==="win").length
-        let l=day.filter(x=>x.outcome==="loss").length
-        let b=day.filter(x=>x.outcome==="be").length
-
-        let cls="beCell"
-        if(w>l && w>b) cls="winCell"
-        else if(l>w && l>b) cls="lossCell"
-
-        html+=`
-        <div class="cell ${cls}">
-            ${day.length}
-            <div class="tooltip">
-                ${key}<br>
-                Trades: ${day.length}<br>
-                W:${w} L:${l} BE:${b}
-            </div>
+    html += `
+      <div class="rrr-card">
+        <div class="rrr-title">${c.key} (RR ${c.rr})</div>
+        <div class="text-xs opacity-70 mt-1">Trades: ${total} • Winrate: ${winrate}% • ${prof}</div>
+        <div class="rrr-line mt-2">
+          <div class="rrr-progress" style="width:${bar}%;"></div>
         </div>
-        `
-    }
+      </div>`
+  })
 
-    document.getElementById("heatmap").innerHTML=html
+  rrr.innerHTML = html
+}
+
+function prevMonth() {
+  currentMonth.setMonth(currentMonth.getMonth() - 1)
+  drawCalendar()
+}
+
+function nextMonth() {
+  currentMonth.setMonth(currentMonth.getMonth() + 1)
+  drawCalendar()
+}
+
+function drawCalendar() {
+  let map = {}
+  trades.forEach(t => {
+    let d = t.time.toISOString().split("T")[0]
+    if(!map[d]) map[d] = []
+    map[d].push(t)
+  })
+  
+  let year = currentMonth.getFullYear()
+  let month = currentMonth.getMonth()
+  
+  let firstDay = new Date(year, month, 1)
+  let startDate = new Date(firstDay)
+  startDate.setDate(startDate.getDate() - firstDay.getDay())
+  
+  let monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"]
+  document.getElementById("monthLabel").innerText = monthNames[month] + " " + year
+  
+  let html = ""
+  let current = new Date(startDate)
+  
+  for(let i = 0; i < 42; i++) {
+    let key = current.toISOString().split("T")[0]
+    let isCurrentMonth = current.getMonth() === month
+    
+    if(!map[key]) {
+      html += `<div class="aspect-square bg-slate-700 rounded flex items-center justify-center text-xs opacity-30 ${!isCurrentMonth ? 'opacity-10' : ''}"></div>`
+    } else {
+      let day = map[key]
+      let w = day.filter(x => x.outcome === "win").length
+      let l = day.filter(x => x.outcome === "loss").length
+      let b = day.filter(x => x.outcome === "be").length
+      
+      let color = "bg-yellow-500"
+      if(w > l && w > b && w > 0) color = "bg-green-500"
+      else if(l > w && l > b && l > 0) color = "bg-red-500"
+      
+      let pnl = day.reduce((sum, t) => sum + t.pnlPoints, 0)
+      let pnlDollar = pnl * NQ_MULTIPLIER
+      let textColor = pnlDollar > 0 ? "text-green-300" : pnlDollar < 0 ? "text-red-300" : "text-white"
+      
+      html += `
+      <div class="aspect-square ${color} rounded flex flex-col items-center justify-center text-xs font-bold text-black hover:shadow-lg hover:shadow-yellow-400/50 transition-all cursor-pointer group relative" title="${day.length} trades">
+        <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-slate-900 px-2 py-1 rounded text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-700 z-10">
+          ${day.length}t | ${pnlDollar > 0 ? '+' : ''}$${pnlDollar}
+        </div>
+        <span>${current.getDate()}</span>
+        <span class="${textColor} text-xs">${pnlDollar > 0 ? '+' : ''}$${pnlDollar}</span>
+      </div>`
+    }
+    
+    current.setDate(current.getDate() + 1)
+  }
+  
+  document.getElementById("calendar").innerHTML = html
+}
+
+function downloadCSV() {
+  if(trades.length === 0) return alert("Tidak ada data untuk didownload")
+
+  let s = calcStats.__cached || {}
+  let total = s.total || trades.length
+  let winrate = s.winrate || 0
+  let exp = s.exp || "0.00"
+  let totalPnl = s.totalPnl || trades.reduce((sum,t)=>sum+t.pnlPoints,0)
+  let totalPnlUSD = s.pnlDollar || totalPnl * NQ_MULTIPLIER
+  let maxDD = s.maxDD || 0
+  let maxW = s.maxWinStreak || 0
+  let maxL = s.maxLossStreak || 0
+  let avgMonthly = s.avgMonthly || "0.00"
+  let propGood = s.propGood ? "✅ Eligible" : "❌ Not Yet"
+
+  let csv = "No,Date,Outcome,Risk (pts),Reward (pts),RR Ratio,PNL (pts),PNL (USD)\n"
+  trades.forEach((t, i) => {
+    let date = t.time.toLocaleDateString('ms-MY')
+    let pnlUSD = t.pnlPoints * NQ_MULTIPLIER
+    csv += `${i+1},"${date}","${t.outcome}","${t.risk}","${t.reward}","${t.rr.toFixed(2)}","${t.pnlPoints}","${pnlUSD}"\n`
+  })
+
+  csv += "\nSummary,,,,,,\n"
+  csv += `Total Trades,${total}\n`
+  csv += `Winrate,${winrate}%\n`
+  csv += `Expectancy,${exp}R\n`
+  csv += `Total PNL (pts),${totalPnl}\n`
+  csv += `Total PNL (USD),${totalPnlUSD}\n`
+  csv += `Max Drawdown,${maxDD.toFixed(2)}%\n`
+  csv += `Max Win Streak,${maxW}\n`
+  csv += `Max Loss Streak,${maxL}\n`
+  csv += `Avg Monthly Return,${avgMonthly}%\n`
+  csv += `Prop Firm Status,${propGood}\n`
+
+  csv += "\nRRR Category,Trades,Winrate,Profitability\n"
+  ;["1:1","1:2","1:3+"].forEach(c => {
+    let arr = trades.filter(t => t.cat === c)
+    if (arr.length === 0) {
+      csv += `${c},0,0%,N/A\n`
+      return
+    }
+    let winsCat = arr.filter(t => t.outcome === "win").length
+    let wrCat = (winsCat / arr.length * 100).toFixed(1)
+    let rrVal = c === "1:1" ? 1 : c === "1:2" ? 2 : 3
+    let prof = profitability(wrCat, rrVal)
+    csv += `${c},${arr.length},${wrCat}%,${prof}\n`
+  })
+
+  let blob = new Blob([csv], { type: 'text/csv' })
+  let url = window.URL.createObjectURL(blob)
+  let a = document.createElement('a')
+  a.href = url
+  a.download = `ICT_Macro_Journal_${new Date().toISOString().split('T')[0]}.csv`
+  a.click()
+  window.URL.revokeObjectURL(url)
+}
+
+function updateResetButton() {
+  let btn = document.getElementById("resetBtn")
+  if(trades.length >= 100) {
+    btn.style.display = "block"
+  } else {
+    btn.style.display = "none"
+  }
+}
+
+function resetAllTrades() {
+  if(!confirm("⚠️ Reset semua " + trades.length + " trades? Yakin?")) return
+  trades = []
+  outcome = null
+  update()
 }
 
 update()
