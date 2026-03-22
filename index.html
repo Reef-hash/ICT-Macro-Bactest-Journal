@@ -251,6 +251,34 @@ let currentMonth = new Date()
 
 const NQ_MULTIPLIER = 20 // 1 point = $20 per contract
 
+function saveTrades() {
+  try {
+    const serializable = trades.map(t => ({
+      ...t,
+      time: t.time.toISOString()
+    }))
+    localStorage.setItem('ict_macro_trades', JSON.stringify(serializable))
+  } catch (e) {
+    console.error('Gagal simpan trades', e)
+  }
+}
+
+function loadTrades() {
+  try {
+    const stored = localStorage.getItem('ict_macro_trades')
+    if (!stored) return
+    const parsed = JSON.parse(stored)
+    const tradeArr = Array.isArray(parsed) ? parsed : []
+    trades = tradeArr.map(t => ({
+      ...t,
+      time: new Date(t.time)
+    }))
+  } catch (e) {
+    console.error('Gagal muat trades', e)
+    trades = []
+  }
+}
+
 function setOutcome(o) { outcome = o }
 
 function addTrade() {
@@ -287,6 +315,7 @@ function update() {
   calcRRR()
   drawCalendar()
   updateResetButton()
+  saveTrades()
 }
 
 function calcStats() {
@@ -546,6 +575,7 @@ function resetAllTrades() {
   update()
 }
 
+loadTrades()
 update()
 </script>
 
