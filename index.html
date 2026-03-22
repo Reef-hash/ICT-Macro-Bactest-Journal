@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ICT Macro Journal</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     /* full-page live background */
     #live-bg {
@@ -62,6 +63,180 @@
     .rrr-badge { font-size:.72rem; padding:.15rem .5rem; border-radius:999px; }
     .rrr-badge-win { background:#04785711; color:#22c55e; }
     .rrr-badge-loss { background:#7f1d1d11; color:#ef4444; }
+
+    /* Title Effects */
+    .title-glow {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24, #f59e0b);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite, float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5)) drop-shadow(0 0 40px rgba(245, 158, 11, 0.3));
+      text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* Tech Stack Icons */
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .tech-badge:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .tech-badge i {
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tech-html {
+      border-color: #f16529;
+      color: #f16529;
+    }
+
+    .tech-html:hover {
+      background: rgba(241, 101, 41, 0.2);
+      box-shadow: 0 0 20px rgba(241, 101, 41, 0.5);
+    }
+
+    .tech-css {
+      border-color: #1572b6;
+      color: #1572b6;
+    }
+
+    .tech-css:hover {
+      background: rgba(21, 114, 182, 0.2);
+      box-shadow: 0 0 20px rgba(21, 114, 182, 0.5);
+    }
+
+    .tech-js {
+      border-color: #f7df1e;
+      color: #f7df1e;
+    }
+
+    .tech-js:hover {
+      background: rgba(247, 223, 30, 0.2);
+      box-shadow: 0 0 20px rgba(247, 223, 30, 0.5);
+    }
+
+    /* Social Icons */
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      border: 2px solid;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-5px);
+      border-color: currentColor;
+    }
+
+    .social-tiktok {
+      border-color: #25f4ee;
+      color: #25f4ee;
+      background: linear-gradient(135deg, rgba(37, 244, 238, 0.15) 0%, rgba(37, 244, 238, 0.05) 100%);
+    }
+
+    .social-tiktok::before {
+      background: linear-gradient(135deg, #25f4ee 0%, #00d4ff 100%);
+    }
+
+    .social-tiktok:hover {
+      color: #000;
+      border-color: #25f4ee;
+      box-shadow: 0 0 20px rgba(37, 244, 238, 0.7), 0 0 40px rgba(37, 244, 238, 0.4), inset 0 0 20px rgba(37, 244, 238, 0.2);
+    }
+
+    .social-tiktok:hover::before {
+      left: 0;
+    }
+
+    .social-github {
+      border-color: #fff;
+      color: #fff;
+    }
+
+    .social-github::before {
+      background: linear-gradient(135deg, #fff 0%, #555 100%);
+    }
+
+    .social-github:hover {
+      color: #000;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(100, 100, 100, 0.3);
+    }
+
+    .social-github:hover::before {
+      left: 0;
+    }
+
+    /* Header Centering */
+    .header-centered {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header-title-section {
+      flex: 1;
+    }
+
+    @media (max-width: 640px) {
+      .title-glow {
+        font-size: 2rem;
+      }
+    }
   </style>
 </head>
 
@@ -73,18 +248,36 @@
   <div class="app-wrap max-w-6xl mx-auto space-y-4">
 
 <!-- HEADER -->
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-<div>
-<h1 class="text-4xl font-bold text-yellow-400">📊 ICT Macro Journal</h1>
-<p class="text-sm opacity-70 mt-1 flex gap-2 flex-wrap">
+<div class="header-centered">
+<div class="header-title-section">
+<h1 class="title-glow">📊 ICT Macro Journal</h1>
+<p class="text-sm opacity-70 mt-2 flex gap-2 flex-wrap justify-center">
 <span>Backtester / Forwardtest</span>
 <span>•</span>
 <span>Dev: Zarif (Reef)</span>
 </p>
-<div class="flex gap-2 mt-2 text-xs flex-wrap">
-<span class="flex items-center gap-1">🔧 Built with <span class="font-semibold">HTML</span></span>
-<span class="flex items-center gap-1">🎨 <span class="font-semibold">CSS</span></span>
-<span class="flex items-center gap-1">⚡ <span class="font-semibold">JavaScript</span></span>
+<div class="flex gap-2 mt-3 text-xs flex-wrap justify-center">
+<span class="tech-badge tech-html">
+  <i class="fab fa-html5"></i>
+  <span>HTML5</span>
+</span>
+<span class="tech-badge tech-css">
+  <i class="fab fa-css3-alt"></i>
+  <span>CSS3</span>
+</span>
+<span class="tech-badge tech-js">
+  <i class="fab fa-js"></i>
+  <span>JavaScript</span>
+</span>
+</div>
+
+<div class="flex gap-3 mt-4 justify-center">
+<a href="https://www.tiktok.com/@zarif02912" target="_blank" rel="noopener noreferrer" class="social-icon social-tiktok" title="Follow on TikTok">
+  <i class="fab fa-tiktok"></i>
+</a>
+<a href="https://github.com/Reef-hash" target="_blank" rel="noopener noreferrer" class="social-icon social-github" title="Visit GitHub">
+  <i class="fab fa-github"></i>
+</a>
 </div>
 </div>
 
