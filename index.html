@@ -7,326 +7,225 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-    /* full-page live background */
-    #live-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      overflow: hidden;
-      background: linear-gradient(120deg, #0f172a, #080b12, #111827);
-      animation: bgShift 15s ease infinite;
-      filter: saturate(1.2) contrast(1.1);
-    }
-
-    @keyframes bgShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .live-dot {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.3));
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(34, 211, 238, 0.3), 0 0 10px rgba(144, 180, 0, 0.2);
-      animation: floatUp 10s cubic-bezier(0.4, 0, 0.2, 1) infinite, pulse 3s ease-in-out infinite;
-      opacity: 0.6;
-      mix-blend-mode: screen;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(30px) scale(0.7); opacity: 0; }
-      20% { opacity: 0.5; }
-      50% { transform: translateY(-80px) scale(1.1); opacity: 0.75; }
-      80% { opacity: 0.3; }
-      100% { transform: translateY(-220px) scale(0.6); opacity: 0; }
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.25); opacity: 0.9; }
-    }
-
-    .app-wrap {
-      position: relative;
-      z-index: 2;
-    }
-
-    .rrr-card { cursor:pointer; background:#1f2937; border:1px solid #334155; border-radius:12px; padding:12px; transition:all .25s; }
-    .rrr-card:hover { transform:translateY(-2px); border-color:#f59e0b; box-shadow:0 8px 20px rgba(252,211,77,.28); }
-    .rrr-card.active { border-color:#22c55e; background:#152132; box-shadow:0 12px 28px rgba(34,197,94,.35); }
-    .rrr-title { font-weight:600; letter-spacing:.02em; }
-    .rrr-line { height:8px; border-radius:999px; background: #334155; margin-top:6px; overflow:hidden; }
-    .rrr-progress { height:100%; border-radius:999px; background: linear-gradient(90deg,#22c55e,#14b8a6); }
-    .rrr-badge { font-size:.72rem; padding:.15rem .5rem; border-radius:999px; }
-    .rrr-badge-win { background:#04785711; color:#22c55e; }
-    .rrr-badge-loss { background:#7f1d1d11; color:#ef4444; }
-
-    /* Title Effects */
-    .title-glow {
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24, #f59e0b);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s linear infinite, float 3s ease-in-out infinite;
-      filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5)) drop-shadow(0 0 40px rgba(245, 158, 11, 0.3));
-      text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
-    }
-
-    @keyframes shimmer {
-      0% { background-position: -200% center; }
-      100% { background-position: 200% center; }
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-
-    /* Tech Stack Icons */
-    .tech-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 999px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .tech-badge:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .tech-badge i {
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tech-html {
-      border-color: #f16529;
-      color: #f16529;
-    }
-
-    .tech-html:hover {
-      background: rgba(241, 101, 41, 0.2);
-      box-shadow: 0 0 20px rgba(241, 101, 41, 0.5);
-    }
-
-    .tech-css {
-      border-color: #1572b6;
-      color: #1572b6;
-    }
-
-    .tech-css:hover {
-      background: rgba(21, 114, 182, 0.2);
-      box-shadow: 0 0 20px rgba(21, 114, 182, 0.5);
-    }
-
-    .tech-js {
-      border-color: #f7df1e;
-      color: #f7df1e;
-    }
-
-    .tech-js:hover {
-      background: rgba(247, 223, 30, 0.2);
-      box-shadow: 0 0 20px rgba(247, 223, 30, 0.5);
-    }
-
-    /* Social Icons */
-    .social-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      border: 2px solid;
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .social-icon::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      transition: left 0.3s ease;
-      z-index: -1;
-    }
-
-    .social-icon:hover {
-      transform: translateY(-5px);
-      border-color: currentColor;
-    }
-
-    .social-tiktok {
-      border-color: #25f4ee;
-      color: #25f4ee;
-      background: linear-gradient(135deg, rgba(37, 244, 238, 0.15) 0%, rgba(37, 244, 238, 0.05) 100%);
-    }
-
-    .social-tiktok::before {
-      background: linear-gradient(135deg, #25f4ee 0%, #00d4ff 100%);
-    }
-
-    .social-tiktok:hover {
-      color: #000;
-      border-color: #25f4ee;
-      box-shadow: 0 0 20px rgba(37, 244, 238, 0.7), 0 0 40px rgba(37, 244, 238, 0.4), inset 0 0 20px rgba(37, 244, 238, 0.2);
-    }
-
-    .social-tiktok:hover::before {
-      left: 0;
-    }
-
-    .social-github {
-      border-color: #fff;
-      color: #fff;
-    }
-
-    .social-github::before {
-      background: linear-gradient(135deg, #fff 0%, #555 100%);
-    }
-
-    .social-github:hover {
-      color: #000;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(100, 100, 100, 0.3);
-    }
-
-    .social-github:hover::before {
-      left: 0;
-    }
-
-    /* Header Centering */
-    .header-centered {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .header-title-section {
-      flex: 1;
-    }
-
-    @media (max-width: 640px) {
-      .title-glow {
-        font-size: 2rem;
-      }
-    }
-  </style>
+  /* ── Background ── */
+  #live-bg {
+    position: fixed; inset: 0; z-index: -1; overflow: hidden;
+    background: linear-gradient(120deg, #0f172a, #080b12, #111827);
+    animation: bgShift 15s ease infinite;
+    filter: saturate(1.2) contrast(1.1);
+  }
+  @keyframes bgShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .live-dot {
+    position: absolute; border-radius: 999px;
+    animation: floatUp 10s cubic-bezier(0.4,0,0.2,1) infinite, pulse 3s ease-in-out infinite;
+    opacity: .6; mix-blend-mode: screen;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(30px) scale(0.7); opacity: 0; }
+    20%  { opacity: .5; }
+    50%  { transform: translateY(-80px) scale(1.1); opacity: .75; }
+    80%  { opacity: .3; }
+    100% { transform: translateY(-220px) scale(0.6); opacity: 0; }
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50%      { transform: scale(1.25); opacity: .9; }
+  }
+  .app-wrap { position: relative; z-index: 2; }
+ 
+  /* ── Title ── */
+  .title-glow {
+    font-size: 3rem; font-weight: 900; letter-spacing: .05em;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24, #f59e0b);
+    background-size: 200% auto;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: shimmer 3s linear infinite, float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(251,191,36,.5)) drop-shadow(0 0 40px rgba(245,158,11,.3));
+  }
+  @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+ 
+  /* ── Tech badges ── */
+  .tech-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .5rem 1rem; border-radius: 999px; font-size: .875rem; font-weight: 600;
+    background: rgba(30,41,59,.6); border: 1px solid;
+    transition: all .3s; backdrop-filter: blur(10px);
+  }
+  .tech-badge:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.3); }
+  .tech-html { border-color:#f16529; color:#f16529; }
+  .tech-html:hover { background:rgba(241,101,41,.2); box-shadow:0 0 20px rgba(241,101,41,.5); }
+  .tech-css { border-color:#1572b6; color:#1572b6; }
+  .tech-css:hover { background:rgba(21,114,182,.2); box-shadow:0 0 20px rgba(21,114,182,.5); }
+  .tech-js { border-color:#f7df1e; color:#f7df1e; }
+  .tech-js:hover { background:rgba(247,223,30,.2); box-shadow:0 0 20px rgba(247,223,30,.5); }
+ 
+  /* ── Social ── */
+  .social-icon {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:3rem; height:3rem; border-radius:50%; border:2px solid;
+    font-size:1.5rem; transition:all .3s; text-decoration:none;
+    position:relative; overflow:hidden;
+  }
+  .social-icon::before {
+    content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+    border-radius:50%; transition:left .3s; z-index:-1;
+  }
+  .social-icon:hover { transform:translateY(-5px); }
+  .social-tiktok { border-color:#25f4ee; color:#25f4ee; background:linear-gradient(135deg,rgba(37,244,238,.15),rgba(37,244,238,.05)); }
+  .social-tiktok::before { background:linear-gradient(135deg,#25f4ee,#00d4ff); }
+  .social-tiktok:hover { color:#000; box-shadow:0 0 20px rgba(37,244,238,.7),0 0 40px rgba(37,244,238,.4); }
+  .social-tiktok:hover::before { left:0; }
+  .social-github { border-color:#fff; color:#fff; }
+  .social-github::before { background:linear-gradient(135deg,#fff,#555); }
+  .social-github:hover { color:#000; box-shadow:0 0 20px rgba(255,255,255,.5); }
+  .social-github:hover::before { left:0; }
+ 
+  /* ── RRR cards ── */
+  .rrr-card {
+    cursor:pointer; background:#1f2937; border:1px solid #334155;
+    border-radius:12px; padding:12px; transition:all .25s;
+  }
+  .rrr-card:hover { transform:translateY(-2px); border-color:#f59e0b; box-shadow:0 8px 20px rgba(252,211,77,.28); }
+  .rrr-card.active { border-color:#22c55e; background:#152132; box-shadow:0 12px 28px rgba(34,197,94,.35); }
+  .rrr-line { height:8px; border-radius:999px; background:#334155; margin-top:6px; overflow:hidden; }
+  .rrr-progress { height:100%; border-radius:999px; background:linear-gradient(90deg,#22c55e,#14b8a6); }
+ 
+  /* ── Input mode toggle ── */
+  .mode-btn {
+    flex:1; padding:.6rem 1rem; border-radius:8px; font-size:.85rem; font-weight:600;
+    border:1px solid #334155; background:#1e293b; color:#94a3b8;
+    cursor:pointer; transition:all .25s;
+  }
+  .mode-btn.active {
+    background:#f59e0b; color:#000; border-color:#f59e0b;
+    box-shadow:0 0 12px rgba(245,158,11,.4);
+  }
+ 
+  /* ── Outcome buttons ── */
+  .outcome-btn {
+    flex:1; position:relative; overflow:hidden; padding:.75rem 1rem;
+    border-radius:8px; font-weight:700; cursor:pointer;
+    border:2px solid transparent; transition:all .25s;
+  }
+  .outcome-btn.selected-win  { border-color:#22c55e; box-shadow:0 0 16px rgba(34,197,94,.5); }
+  .outcome-btn.selected-be   { border-color:#f59e0b; box-shadow:0 0 16px rgba(245,158,11,.5); }
+  .outcome-btn.selected-loss { border-color:#ef4444; box-shadow:0 0 16px rgba(239,68,68,.5); }
+ 
+  /* ── Info pill ── */
+  .info-pill {
+    display:inline-flex; align-items:center; gap:.4rem;
+    padding:.25rem .75rem; border-radius:999px; font-size:.75rem; font-weight:600;
+    background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.4); color:#a5b4fc;
+  }
+ 
+  /* ── Instrument tag ── */
+  .inst-tag {
+    display:inline-flex; align-items:center; gap:.3rem;
+    padding:.15rem .6rem; border-radius:6px; font-size:.7rem; font-weight:700;
+    letter-spacing:.05em;
+  }
+  .inst-futures { background:rgba(99,102,241,.2); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
+  .inst-gold    { background:rgba(251,191,36,.15); color:#fbbf24; border:1px solid rgba(251,191,36,.3); }
+  .inst-forex   { background:rgba(34,197,94,.15);  color:#4ade80; border:1px solid rgba(34,197,94,.3);  }
+  .inst-custom  { background:rgba(148,163,184,.15); color:#94a3b8; border:1px solid rgba(148,163,184,.3); }
+ 
+  /* ── Computed preview box ── */
+  .calc-preview {
+    background:rgba(15,23,42,.6); border:1px solid #1e293b; border-radius:10px;
+    padding:.85rem 1.1rem; font-size:.88rem; transition:all .3s ease;
+    backdrop-filter: blur(8px);
+  }
+  #instInfo {
+    border:2px solid rgba(249,115,22,.35);
+    box-shadow:0 12px 30px rgba(249,115,22,.25);
+    transform: scale(1);
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  #instInfo:hover {
+    transform: scale(1.02) translateY(-2px);
+    border-color: rgba(253,224,71,.65);
+    box-shadow:0 16px 40px rgba(249,115,22,.35), 0 0 20px rgba(249,115,22,.20);
+  }
+  #instInfo .inst-tag {
+    font-size:.75rem; padding:.25rem .75rem;
+    box-shadow:0 0 8px rgba(255,255,255,.12);
+    transition: all .25s ease;
+  }
+  #instInfo:hover .inst-tag {
+    transform: translateY(-1px) scale(1.05);
+    box-shadow:0 0 14px rgba(255,255,255,.25);
+  }
+ 
+  @media (max-width:640px) { .title-glow { font-size:2rem; } }
+</style>
 </head>
-
+ 
 <body class="bg-slate-900 text-white p-4">
-  <div id="live-bg">
-    <!-- dots generated by JavaScript for truly random color + motion -->
+<div id="live-bg"></div>
+ 
+<div class="app-wrap max-w-6xl mx-auto space-y-4">
+ 
+<!-- ════════════════ HEADER ════════════════ -->
+<div class="flex flex-col items-center gap-4 text-center mb-2">
+  <div>
+    <h1 class="title-glow">📊 ICT Macro Journal</h1>
+    <p class="text-sm opacity-70 mt-2 flex gap-2 flex-wrap justify-center">
+      <span>Backtester / Forwardtest</span><span>•</span><span>Dev: Zarif (Reef)</span>
+    </p>
+    <div class="flex gap-2 mt-3 text-xs flex-wrap justify-center">
+      <span class="tech-badge tech-html"><i class="fab fa-html5"></i><span>HTML5</span></span>
+      <span class="tech-badge tech-css"><i class="fab fa-css3-alt"></i><span>CSS3</span></span>
+      <span class="tech-badge tech-js"><i class="fab fa-js"></i><span>JavaScript</span></span>
+    </div>
+    <div class="flex gap-3 mt-4 justify-center">
+      <a href="https://www.tiktok.com/@zarif02912" target="_blank" rel="noopener noreferrer" class="social-icon social-tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://github.com/Reef-hash" target="_blank" rel="noopener noreferrer" class="social-icon social-github" title="GitHub"><i class="fab fa-github"></i></a>
+    </div>
   </div>
-
-  <div class="app-wrap max-w-6xl mx-auto space-y-4">
-
-<!-- HEADER -->
-<div class="header-centered">
-<div class="header-title-section">
-<h1 class="title-glow">📊 ICT Macro Journal</h1>
-<p class="text-sm opacity-70 mt-2 flex gap-2 flex-wrap justify-center">
-<span>Backtester / Forwardtest</span>
-<span>•</span>
-<span>Dev: Zarif (Reef)</span>
-</p>
-<div class="flex gap-2 mt-3 text-xs flex-wrap justify-center">
-<span class="tech-badge tech-html">
-  <i class="fab fa-html5"></i>
-  <span>HTML5</span>
-</span>
-<span class="tech-badge tech-css">
-  <i class="fab fa-css3-alt"></i>
-  <span>CSS3</span>
-</span>
-<span class="tech-badge tech-js">
-  <i class="fab fa-js"></i>
-  <span>JavaScript</span>
-</span>
+  <div class="flex gap-2">
+    <button onclick="downloadCSV()" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm">📥 Download CSV</button>
+    <button onclick="resetAllTrades()" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;">🔄 Reset (100+)</button>
+  </div>
 </div>
-
-<div class="flex gap-3 mt-4 justify-center">
-<a href="https://www.tiktok.com/@zarif02912" target="_blank" rel="noopener noreferrer" class="social-icon social-tiktok" title="Follow on TikTok">
-  <i class="fab fa-tiktok"></i>
-</a>
-<a href="https://github.com/Reef-hash" target="_blank" rel="noopener noreferrer" class="social-icon social-github" title="Visit GitHub">
-  <i class="fab fa-github"></i>
-</a>
-</div>
-</div>
-
-<div class="flex gap-2">
-<button onclick="downloadCSV()" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm">
-📥 Download CSV
-</button>
-<button onclick="resetAllTrades()" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;">
-🔄 Reset (100+)
-</button>
-</div>
-</div>
-
-<!-- INFO BANNER -->
+ 
+<!-- ════════════════ INFO BANNER ════════════════ -->
 <div class="bg-blue-900/30 border border-blue-700 rounded-xl p-4 space-y-2">
-<p class="font-semibold text-blue-300">ℹ️ Information</p>
-<ul class="text-xs opacity-90 space-y-1 ml-4">
-<li>✓ Ini adalah <span class="font-semibold">Static Website</span> - data hanya disimpan dalam device anda</li>
-<li>✓ Data akan hilang jika browser cache dibersihkan atau refresh page tanpa backup</li>
-<li>✓ Gunakan tombol <span class="font-semibold">📥 Download CSV</span> untuk backup data anda</li>
-<li>✓ Reset button akan muncul apabila total trades mencapai 100+</li>
-</ul>
+  <p class="font-semibold text-blue-300">ℹ️ Information</p>
+  <ul class="text-xs opacity-90 space-y-1 ml-4">
+    <li>✓ <span class="font-semibold">Static Website</span> — data hanya disimpan dalam device anda</li>
+    <li>✓ Data akan hilang jika browser cache dibersihkan — backup dengan CSV</li>
+    <li>✓ Futures (NQ/ES/MES/MNQ) dikira dalam <span class="font-semibold">Points</span>, Gold dalam <span class="font-semibold">Pips (0.1)</span>, Forex dalam <span class="font-semibold">Pips (0.0001/0.01)</span></li>
+    <li>✓ Reset button muncul apabila total trades ≥ 100</li>
+  </ul>
 </div>
-
-<!-- STATS -->
+ 
+<!-- ════════════════ STATS ROW 1 ════════════════ -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-<p class="text-sm opacity-70">Total Trades</p>
-<p id="total" class="text-2xl font-bold">0</p>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Total Trades</p>
+    <p id="total" class="text-2xl font-bold">0</p>
+  </div>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Winrate</p>
+    <p id="winrate" class="text-2xl font-bold">0%</p>
+  </div>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Expectancy</p>
+    <p id="exp" class="text-2xl font-bold">0R</p>
+  </div>
+  <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <p class="text-sm opacity-70">Total PNL (USD)</p>
+    <p id="pnl" class="text-2xl font-bold text-green-400">$0</p>
+  </div>
 </div>
-
-<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-<p class="text-sm opacity-70">Winrate</p>
-<p id="winrate" class="text-2xl font-bold">0%</p>
-</div>
-
-<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-<p class="text-sm opacity-70">Expectancy</p>
-<p id="exp" class="text-2xl font-bold">0R</p>
-</div>
-
-<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-<p class="text-sm opacity-70">Total PNL</p>
-<p id="pnl" class="text-2xl font-bold text-green-400">$0</p>
-</div>
-</div>
-
-<!-- NEW PROP-FIRM STATS -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-1">
+ 
+<!-- ════════════════ STATS ROW 2 ════════════════ -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
   <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
     <p class="text-sm opacity-70">Max Drawdown</p>
     <p id="maxDrawdown" class="text-2xl font-bold text-orange-400">0%</p>
@@ -344,166 +243,417 @@
     <p id="propStatus" class="text-2xl font-bold text-yellow-300">-</p>
   </div>
 </div>
-
-<!-- INPUT -->
-<div class="bg-slate-800 p-4 rounded-xl space-y-3 border border-slate-700">
-
-<div class="flex gap-2">
-<input id="risk" placeholder="Risk (Points)" type="number" class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors">
-<input id="reward" placeholder="Reward (Points)" type="number" class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors">
+ 
+<!-- ════════════════ INPUT PANEL ════════════════ -->
+<div class="bg-slate-800 p-4 rounded-xl space-y-4 border border-slate-700">
+ 
+  <!-- Instrument selector -->
+  <div class="space-y-2">
+    <label class="text-xs font-semibold opacity-70 uppercase tracking-wider">Instrument</label>
+    <div class="flex gap-2 flex-wrap">
+      <select id="instSelect" onchange="onInstrumentChange()" class="flex-1 min-w-40 p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors text-sm">
+        <optgroup label="── Futures ──">
+          <option value="NQ">NQ (Nasdaq Futures)</option>
+          <option value="ES">ES (S&P 500 Futures)</option>
+          <option value="MNQ">MNQ (Micro Nasdaq)</option>
+          <option value="MES">MES (Micro S&P)</option>
+          <option value="YM">YM (Dow Jones Futures)</option>
+          <option value="MYM">MYM (Micro Dow)</option>
+          <option value="RTY">RTY (Russell 2000)</option>
+          <option value="CL">CL (Crude Oil)</option>
+          <option value="GC">GC (Gold Futures)</option>
+        </optgroup>
+        <optgroup label="── Gold / Metals ──">
+          <option value="XAUUSD">XAUUSD (Gold Spot)</option>
+          <option value="XAGUSD">XAGUSD (Silver Spot)</option>
+        </optgroup>
+        <optgroup label="── Forex Majors ──">
+          <option value="EURUSD">EURUSD</option>
+          <option value="GBPUSD">GBPUSD</option>
+          <option value="USDJPY">USDJPY</option>
+          <option value="USDCHF">USDCHF</option>
+          <option value="AUDUSD">AUDUSD</option>
+          <option value="NZDUSD">NZDUSD</option>
+          <option value="USDCAD">USDCAD</option>
+        </optgroup>
+        <optgroup label="── Forex Minors ──">
+          <option value="GBPJPY">GBPJPY</option>
+          <option value="EURJPY">EURJPY</option>
+          <option value="EURGBP">EURGBP</option>
+          <option value="GBPAUD">GBPAUD</option>
+          <option value="EURCAD">EURCAD</option>
+        </optgroup>
+        <optgroup label="── Crypto ──">
+          <option value="BTCUSD">BTCUSD</option>
+          <option value="ETHUSD">ETHUSD</option>
+        </optgroup>
+        <option value="CUSTOM">✏️ Custom Instrument</option>
+      </select>
+      <input id="customInstInput" placeholder="e.g. GBPNZD" class="hidden flex-1 min-w-32 p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors text-sm">
+    </div>
+ 
+    <!-- Instrument info pill -->
+    <div id="instInfo" class="calc-preview flex flex-wrap gap-3 items-center">
+      <span class="inst-tag inst-futures">FUTURES</span>
+      <span class="text-slate-300">NQ · 1 point = <span class="text-yellow-300 font-bold">$20.00</span> per contract</span>
+      <span class="opacity-50">|</span>
+      <span class="text-slate-400 text-xs">Unit: <span id="unitLabel" class="text-cyan-300 font-semibold">Points</span></span>
+    </div>
+  </div>
+ 
+  <!-- Lot / Contract size -->
+  <div class="space-y-1">
+    <label class="text-xs font-semibold opacity-70 uppercase tracking-wider" id="lotLabel">Contracts</label>
+    <input id="lotSize" type="number" value="1" min="0.01" step="0.01"
+      class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors text-sm"
+      oninput="recalcPreview()">
+  </div>
+ 
+  <!-- Input Mode Toggle -->
+  <div class="space-y-2">
+    <label class="text-xs font-semibold opacity-70 uppercase tracking-wider">Input Mode</label>
+    <div class="flex gap-2">
+      <button class="mode-btn active" id="modeBtnPrice" onclick="setMode('price')">📍 Entry / SL / TP Price</button>
+      <button class="mode-btn" id="modeBtnManual" onclick="setMode('manual')">✏️ Manual Risk / Reward</button>
+    </div>
+  </div>
+ 
+  <!-- ── PRICE MODE ── -->
+  <div id="priceInputs" class="space-y-3">
+    <div class="grid grid-cols-3 gap-2">
+      <div class="space-y-1">
+        <label class="text-xs opacity-60">Entry Price</label>
+        <input id="entryPrice" type="number" step="any" placeholder="e.g. 21500"
+          class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors text-sm"
+          oninput="recalcPreview()">
+      </div>
+      <div class="space-y-1">
+        <label class="text-xs opacity-60">Stop Loss</label>
+        <input id="slPrice" type="number" step="any" placeholder="e.g. 21450"
+          class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-red-400 outline-none transition-colors text-sm"
+          oninput="recalcPreview()">
+      </div>
+      <div class="space-y-1">
+        <label class="text-xs opacity-60">Take Profit</label>
+        <input id="tpPrice" type="number" step="any" placeholder="e.g. 21600"
+          class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-green-400 outline-none transition-colors text-sm"
+          oninput="recalcPreview()">
+      </div>
+    </div>
+ 
+    <!-- Live calc preview -->
+    <div id="calcPreview" class="calc-preview text-xs space-y-1 hidden">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-1">
+        <span class="opacity-60">Risk Distance:</span><span id="pvRiskDist" class="text-red-300 font-semibold">—</span>
+        <span class="opacity-60">Reward Distance:</span><span id="pvRewDist" class="text-green-300 font-semibold">—</span>
+        <span class="opacity-60">RR Ratio:</span><span id="pvRR" class="text-yellow-300 font-semibold">—</span>
+        <span class="opacity-60">Risk USD:</span><span id="pvRiskUSD" class="text-red-300 font-semibold">—</span>
+        <span class="opacity-60">Reward USD:</span><span id="pvRewUSD" class="text-green-300 font-semibold">—</span>
+        <span class="opacity-60">Unit Type:</span><span id="pvUnit" class="text-cyan-300 font-semibold">—</span>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── MANUAL MODE ── -->
+  <div id="manualInputs" class="hidden space-y-2">
+    <div class="flex gap-2">
+      <div class="flex-1 space-y-1">
+        <label class="text-xs opacity-60" id="riskLabel">Risk (Points/Pips)</label>
+        <input id="risk" placeholder="Risk" type="number" step="any"
+          class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors">
+      </div>
+      <div class="flex-1 space-y-1">
+        <label class="text-xs opacity-60" id="rewardLabel">Reward (Points/Pips)</label>
+        <input id="reward" placeholder="Reward" type="number" step="any"
+          class="w-full p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors">
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Outcome buttons -->
+  <div class="flex gap-3">
+    <button onclick="setOutcome('win')" id="btnWin"
+      class="outcome-btn flex-1 bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-bold">
+      ✅ WIN
+    </button>
+    <button onclick="setOutcome('be')" id="btnBe"
+      class="outcome-btn flex-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-bold">
+      ➖ BE
+    </button>
+    <button onclick="setOutcome('loss')" id="btnLoss"
+      class="outcome-btn flex-1 bg-gradient-to-r from-rose-500 to-red-600 text-black font-bold">
+      ❌ LOSS
+    </button>
+  </div>
+ 
+  <button onclick="addTrade()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-yellow-500/50 transition-all">
+    ➕ Add Trade
+  </button>
 </div>
-
-<div class="flex gap-3">
-<button onclick="setOutcome('win')" class="flex-1 relative overflow-hidden group px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95">
-  <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-emerald-500/50"></div>
-  <div class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-  <span class="relative flex items-center justify-center gap-2 text-black">
-    <span class="text-lg">✅</span> WIN
-  </span>
-</button>
-
-<button onclick="setOutcome('be')" class="flex-1 relative overflow-hidden group px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95">
-  <div class="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-amber-500/50"></div>
-  <div class="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-  <span class="relative flex items-center justify-center gap-2 text-black">
-    <span class="text-lg">➖</span> BE
-  </span>
-</button>
-
-<button onclick="setOutcome('loss')" class="flex-1 relative overflow-hidden group px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95">
-  <div class="absolute inset-0 bg-gradient-to-r from-rose-500 to-red-600 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-rose-500/50"></div>
-  <div class="absolute inset-0 bg-gradient-to-r from-rose-600 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-  <span class="relative flex items-center justify-center gap-2 text-black">
-    <span class="text-lg">❌</span> LOSS
-  </span>
-</button>
-</div>
-
-<button onclick="addTrade()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-yellow-500/50 transition-all">
-➕ Add Trade
-</button>
-
-</div>
-
-<!-- RRR -->
+ 
+<!-- ════════════════ RRR ════════════════ -->
 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
   <h3 class="font-semibold mb-3 text-lg">📈 Risk-Reward-Ratio Analysis</h3>
   <div id="rrr" class="grid grid-cols-1 gap-3"></div>
 </div>
-
-<!-- CALENDAR HEATMAP -->
+ 
+<!-- ════════════════ CALENDAR ════════════════ -->
 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-<div class="flex justify-between items-center mb-4">
-<h3 class="font-semibold text-lg">📅 Trading Calendar</h3>
-<div class="flex gap-2">
-<button onclick="prevMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">←</button>
-<span id="monthLabel" class="font-semibold text-sm min-w-40 text-center"></span>
-<button onclick="nextMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">→</button>
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="font-semibold text-lg">📅 Trading Calendar</h3>
+    <div class="flex gap-2">
+      <button onclick="prevMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">←</button>
+      <span id="monthLabel" class="font-semibold text-sm min-w-40 text-center"></span>
+      <button onclick="nextMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">→</button>
+    </div>
+  </div>
+  <div class="grid grid-cols-7 gap-2 mb-4">
+    <div class="text-center font-semibold text-xs opacity-70">Sun</div>
+    <div class="text-center font-semibold text-xs opacity-70">Mon</div>
+    <div class="text-center font-semibold text-xs opacity-70">Tue</div>
+    <div class="text-center font-semibold text-xs opacity-70">Wed</div>
+    <div class="text-center font-semibold text-xs opacity-70">Thu</div>
+    <div class="text-center font-semibold text-xs opacity-70">Fri</div>
+    <div class="text-center font-semibold text-xs opacity-70">Sat</div>
+  </div>
+  <div id="calendar" class="grid grid-cols-7 gap-2"></div>
+  <div class="mt-4 flex gap-3 text-xs justify-center flex-wrap">
+    <div class="flex items-center gap-2"><div class="w-4 h-4 bg-gray-500 rounded"></div><span>No Trades</span></div>
+    <div class="flex items-center gap-2"><div class="w-4 h-4 bg-red-500 rounded"></div><span>Loss Day</span></div>
+    <div class="flex items-center gap-2"><div class="w-4 h-4 bg-yellow-500 rounded"></div><span>Mixed</span></div>
+    <div class="flex items-center gap-2"><div class="w-4 h-4 bg-green-500 rounded"></div><span>Win Day</span></div>
+  </div>
 </div>
-</div>
-
-<div class="grid grid-cols-7 gap-2 mb-4">
-<div class="text-center font-semibold text-xs opacity-70">Sun</div>
-<div class="text-center font-semibold text-xs opacity-70">Mon</div>
-<div class="text-center font-semibold text-xs opacity-70">Tue</div>
-<div class="text-center font-semibold text-xs opacity-70">Wed</div>
-<div class="text-center font-semibold text-xs opacity-70">Thu</div>
-<div class="text-center font-semibold text-xs opacity-70">Fri</div>
-<div class="text-center font-semibold text-xs opacity-70">Sat</div>
-</div>
-
-<div id="calendar" class="grid grid-cols-7 gap-2"></div>
-
-<div class="mt-4 flex gap-3 text-xs justify-center flex-wrap">
-<div class="flex items-center gap-2">
-<div class="w-4 h-4 bg-gray-500 rounded"></div>
-<span>No Trades</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-4 h-4 bg-red-500 rounded"></div>
-<span>Loss Day</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-4 h-4 bg-yellow-500 rounded"></div>
-<span>Mixed</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="w-4 h-4 bg-green-500 rounded"></div>
-<span>Win Day</span>
-</div>
-</div>
-</div>
-
-</div>
-
-</div>
-
+ 
+</div><!-- end app-wrap -->
+ 
+<!-- ════════════════ SCRIPT ════════════════ -->
 <script>
-let trades = []
+// ── Instrument Database ──────────────────────────────────────────────────────
+// type: 'futures' | 'gold' | 'forex_jpy' | 'forex' | 'crypto' | 'custom'
+// multiplier: USD per 1 point/pip per 1 lot/contract
+// unit: label for distance
+// pipSize: how much 1 pip equals in price terms (for display)
+const INSTRUMENTS = {
+  // Futures - unit = points
+  NQ:     { type:'futures', label:'NQ',     multiplier:20,      unit:'Points', lotLabel:'Contracts', pipSize:1    },
+  ES:     { type:'futures', label:'ES',     multiplier:50,      unit:'Points', lotLabel:'Contracts', pipSize:1    },
+  MNQ:    { type:'futures', label:'MNQ',    multiplier:2,       unit:'Points', lotLabel:'Contracts', pipSize:1    },
+  MES:    { type:'futures', label:'MES',    multiplier:5,       unit:'Points', lotLabel:'Contracts', pipSize:1    },
+  YM:     { type:'futures', label:'YM',     multiplier:5,       unit:'Points', lotLabel:'Contracts', pipSize:1    },
+  MYM:    { type:'futures', label:'MYM',    multiplier:0.5,     unit:'Points', lotLabel:'Contracts', pipSize:1    },
+  RTY:    { type:'futures', label:'RTY',    multiplier:50,      unit:'Points', lotLabel:'Contracts', pipSize:0.1  },
+  CL:     { type:'futures', label:'CL',     multiplier:1000,    unit:'Points', lotLabel:'Contracts', pipSize:0.01 },
+  GC:     { type:'futures', label:'GC',     multiplier:100,     unit:'Points', lotLabel:'Contracts', pipSize:0.1  },
+  // Gold / Metals spot - pip = 0.1
+  XAUUSD: { type:'gold',    label:'XAUUSD', multiplier:1,       unit:'Pips',   lotLabel:'Lots',      pipSize:0.1  },
+  XAGUSD: { type:'gold',    label:'XAGUSD', multiplier:50,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.01 },
+  // Forex standard - pip = 0.0001 (except JPY pairs)
+  EURUSD: { type:'forex',   label:'EURUSD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  GBPUSD: { type:'forex',   label:'GBPUSD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  USDCHF: { type:'forex',   label:'USDCHF', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  AUDUSD: { type:'forex',   label:'AUDUSD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  NZDUSD: { type:'forex',   label:'NZDUSD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  USDCAD: { type:'forex',   label:'USDCAD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  EURGBP: { type:'forex',   label:'EURGBP', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  EURCAD: { type:'forex',   label:'EURCAD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  GBPAUD: { type:'forex',   label:'GBPAUD', multiplier:10,      unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+  // JPY pairs - pip = 0.01
+  USDJPY: { type:'forex_jpy', label:'USDJPY', multiplier:9.1,  unit:'Pips',   lotLabel:'Lots',      pipSize:0.01 },
+  GBPJPY: { type:'forex_jpy', label:'GBPJPY', multiplier:9.1,  unit:'Pips',   lotLabel:'Lots',      pipSize:0.01 },
+  EURJPY: { type:'forex_jpy', label:'EURJPY', multiplier:9.1,  unit:'Pips',   lotLabel:'Lots',      pipSize:0.01 },
+  // Crypto
+  BTCUSD: { type:'crypto',  label:'BTCUSD', multiplier:1,       unit:'Points', lotLabel:'BTC',       pipSize:1    },
+  ETHUSD: { type:'crypto',  label:'ETHUSD', multiplier:1,       unit:'Points', lotLabel:'ETH',       pipSize:1    },
+  CUSTOM: { type:'custom',  label:'CUSTOM', multiplier:10,       unit:'Pips',   lotLabel:'Lots',      pipSize:0.0001 },
+}
+ 
+function getInst() {
+  const key = document.getElementById('instSelect').value
+  const inst = INSTRUMENTS[key] || INSTRUMENTS['CUSTOM']
+  if (key === 'CUSTOM') {
+    const name = (document.getElementById('customInstInput').value || 'CUSTOM').toUpperCase()
+    return { ...inst, label: name }
+  }
+  return inst
+}
+ 
+// distance → pips/points count (raw units)
+function distToUnits(dist, inst) {
+  return Math.abs(dist) / inst.pipSize
+}
+ 
+// units × multiplier × lots = USD
+function unitsToUSD(units, inst, lots) {
+  return units * inst.multiplier * lots
+}
+ 
+// ── State ────────────────────────────────────────────────────────────────────
+let trades  = []
 let outcome = null
+let inputMode = 'price'  // 'price' | 'manual'
 let currentMonth = new Date()
-
-const NQ_MULTIPLIER = 20 // 1 point = $20 per contract
-
-function saveTrades() {
-  try {
-    const serializable = trades.map(t => ({
-      ...t,
-      time: t.time.toISOString()
-    }))
-    localStorage.setItem('ict_macro_trades', JSON.stringify(serializable))
-  } catch (e) {
-    console.error('Gagal simpan trades', e)
-  }
+ 
+// ── Instrument UI ────────────────────────────────────────────────────────────
+function onInstrumentChange() {
+  const key  = document.getElementById('instSelect').value
+  const inst = INSTRUMENTS[key] || INSTRUMENTS['CUSTOM']
+ 
+  // show/hide custom text box
+  const custInput = document.getElementById('customInstInput')
+  custInput.classList.toggle('hidden', key !== 'CUSTOM')
+ 
+  // lot label
+  document.getElementById('lotLabel').textContent = inst.lotLabel
+ 
+  // unit label
+  document.getElementById('unitLabel').textContent = inst.unit
+ 
+  // manual risk/reward label
+  document.getElementById('riskLabel').textContent   = `Risk (${inst.unit})`
+  document.getElementById('rewardLabel').textContent = `Reward (${inst.unit})`
+ 
+  // info pill
+  const typeTag = {
+    futures:   `<span class="inst-tag inst-futures">FUTURES</span>`,
+    gold:      `<span class="inst-tag inst-gold">GOLD/METALS</span>`,
+    forex:     `<span class="inst-tag inst-forex">FOREX</span>`,
+    forex_jpy: `<span class="inst-tag inst-forex">FOREX JPY</span>`,
+    crypto:    `<span class="inst-tag inst-custom">CRYPTO</span>`,
+    custom:    `<span class="inst-tag inst-custom">CUSTOM</span>`,
+  }[inst.type] || `<span class="inst-tag inst-custom">CUSTOM</span>`
+ 
+  document.getElementById('instInfo').innerHTML = `
+    ${typeTag}
+    <span class="text-slate-300">${inst.label} · 1 ${inst.unit} = <span class="text-yellow-300 font-bold">$${inst.multiplier.toFixed(2)}</span> per ${inst.lotLabel.toLowerCase().replace(/s$/,'')}</span>
+    <span class="opacity-50">|</span>
+    <span class="text-slate-400 text-xs">Pip size: <span class="text-cyan-300 font-semibold">${inst.pipSize}</span> | Unit: <span id="unitLabel" class="text-cyan-300 font-semibold">${inst.unit}</span></span>
+  `
+ 
+  recalcPreview()
 }
-
-function loadTrades() {
-  try {
-    const stored = localStorage.getItem('ict_macro_trades')
-    if (!stored) return
-    const parsed = JSON.parse(stored)
-    const tradeArr = Array.isArray(parsed) ? parsed : []
-    trades = tradeArr.map(t => ({
-      ...t,
-      time: new Date(t.time)
-    }))
-  } catch (e) {
-    console.error('Gagal muat trades', e)
-    trades = []
-  }
+ 
+// ── Mode Toggle ──────────────────────────────────────────────────────────────
+function setMode(m) {
+  inputMode = m
+  document.getElementById('modeBtnPrice').classList.toggle('active', m === 'price')
+  document.getElementById('modeBtnManual').classList.toggle('active', m === 'manual')
+  document.getElementById('priceInputs').classList.toggle('hidden', m !== 'price')
+  document.getElementById('manualInputs').classList.toggle('hidden', m !== 'manual')
+  recalcPreview()
 }
-
-function setOutcome(o) { outcome = o }
-
-function addTrade() {
-  let r = parseFloat(risk.value)
-  let rw = parseFloat(reward.value)
-  
-  if(!r || !rw || !outcome) return alert("Isi semua field")
-  
-  let rr = rw / r
-  let cat = "1:1"
-  if(rr >= 1.5 && rr < 2.5) cat = "1:2"
-  else if(rr >= 2.5) cat = "1:3+"
-  
-  let pnlPoints = outcome === 'win' ? rw : outcome === 'loss' ? -r : 0
-  
-  trades.push({
-    rr,
-    cat,
-    outcome,
-    time: new Date(),
-    pnlPoints,
-    risk: r,
-    reward: rw
+ 
+// ── Live Preview ─────────────────────────────────────────────────────────────
+function recalcPreview() {
+  if (inputMode !== 'price') return
+  const entry = parseFloat(document.getElementById('entryPrice').value)
+  const sl    = parseFloat(document.getElementById('slPrice').value)
+  const tp    = parseFloat(document.getElementById('tpPrice').value)
+  const lots  = parseFloat(document.getElementById('lotSize').value) || 1
+  const inst  = getInst()
+  const box   = document.getElementById('calcPreview')
+ 
+  if (!entry || !sl || !tp) { box.classList.add('hidden'); return }
+  box.classList.remove('hidden')
+ 
+  const riskDist = Math.abs(entry - sl)
+  const rewDist  = Math.abs(tp - entry)
+  const riskUnits = distToUnits(riskDist, inst)
+  const rewUnits  = distToUnits(rewDist,  inst)
+  const rr = rewUnits / riskUnits
+  const riskUSD = unitsToUSD(riskUnits, inst, lots)
+  const rewUSD  = unitsToUSD(rewUnits,  inst, lots)
+ 
+  document.getElementById('pvRiskDist').textContent = `${riskUnits.toFixed(2)} ${inst.unit}`
+  document.getElementById('pvRewDist').textContent  = `${rewUnits.toFixed(2)} ${inst.unit}`
+  document.getElementById('pvRR').textContent       = `1 : ${rr.toFixed(2)}`
+  document.getElementById('pvRiskUSD').textContent  = `$${riskUSD.toFixed(2)}`
+  document.getElementById('pvRewUSD').textContent   = `$${rewUSD.toFixed(2)}`
+  document.getElementById('pvUnit').textContent     = inst.unit
+}
+ 
+// ── Outcome ──────────────────────────────────────────────────────────────────
+function setOutcome(o) {
+  outcome = o
+  ;['win','be','loss'].forEach(x => {
+    document.getElementById('btn' + x.charAt(0).toUpperCase() + x.slice(1))
+      .classList.remove('selected-win','selected-be','selected-loss')
   })
-  
-  risk.value = ''
-  reward.value = ''
+  document.getElementById('btn' + o.charAt(0).toUpperCase() + o.slice(1))
+    .classList.add(`selected-${o}`)
+}
+ 
+// ── RR category ──────────────────────────────────────────────────────────────
+function rrCat(rr) {
+  if (rr < 1.5)  return '1:1'
+  if (rr < 2.5)  return '1:2'
+  return '1:3+'
+}
+ 
+// ── Add Trade ─────────────────────────────────────────────────────────────────
+function addTrade() {
+  if (!outcome) return alert('Pilih outcome: WIN / BE / LOSS')
+ 
+  const inst = getInst()
+  const lots = parseFloat(document.getElementById('lotSize').value) || 1
+  let riskUnits, rewUnits, rr, riskUSD, rewUSD
+  let entryP = null, slP = null, tpP = null
+ 
+  if (inputMode === 'price') {
+    entryP = parseFloat(document.getElementById('entryPrice').value)
+    slP    = parseFloat(document.getElementById('slPrice').value)
+    tpP    = parseFloat(document.getElementById('tpPrice').value)
+    if (!entryP || !slP || !tpP) return alert('Isi Entry, SL, dan TP price')
+ 
+    const riskDist = Math.abs(entryP - slP)
+    const rewDist  = Math.abs(tpP - entryP)
+    riskUnits = distToUnits(riskDist, inst)
+    rewUnits  = distToUnits(rewDist,  inst)
+  } else {
+    riskUnits = parseFloat(document.getElementById('risk').value)
+    rewUnits  = parseFloat(document.getElementById('reward').value)
+    if (!riskUnits || !rewUnits) return alert('Isi Risk dan Reward')
+  }
+ 
+  rr       = rewUnits / riskUnits
+  riskUSD  = unitsToUSD(riskUnits, inst, lots)
+  rewUSD   = unitsToUSD(rewUnits,  inst, lots)
+ 
+  const pnlUSD = outcome === 'win' ? rewUSD : outcome === 'loss' ? -riskUSD : 0
+ 
+  trades.push({
+    instrument: inst.label,
+    instType:   inst.type,
+    unit:       inst.unit,
+    lots,
+    riskUnits,
+    rewUnits,
+    rr,
+    cat:        rrCat(rr),
+    outcome,
+    time:       new Date(),
+    pnlUSD,
+    riskUSD,
+    rewUSD,
+    entryPrice: entryP,
+    slPrice:    slP,
+    tpPrice:    tpP,
+  })
+ 
+  // clear inputs
+  ;['entryPrice','slPrice','tpPrice','risk','reward'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = ''
+  })
+  document.getElementById('calcPreview').classList.add('hidden')
+  ;['btnWin','btnBe','btnLoss'].forEach(id => {
+    document.getElementById(id).classList.remove('selected-win','selected-be','selected-loss')
+  })
   outcome = null
+ 
   update()
 }
-
+ 
+// ── Core update ───────────────────────────────────────────────────────────────
 function update() {
   calcStats()
   calcRRR()
@@ -511,299 +661,257 @@ function update() {
   updateResetButton()
   saveTrades()
 }
-
+ 
+// ── Stats ─────────────────────────────────────────────────────────────────────
 function calcStats() {
-  let total = trades.length
-  document.getElementById("total").innerText = total
-  if(total === 0) {
-    document.getElementById("maxDrawdown").innerText = "0%"
-    document.getElementById("consec").innerText = "0 / 0"
-    document.getElementById("avgMonthly").innerText = "0%"
-    document.getElementById("propStatus").innerText = "No Trade"
+  const total = trades.length
+  document.getElementById('total').innerText = total
+ 
+  if (total === 0) {
+    ;['winrate','exp'].forEach(id => document.getElementById(id).innerText = id === 'exp' ? '0R' : '0%')
+    document.getElementById('pnl').innerHTML = '<span class="text-green-400">$0</span>'
+    document.getElementById('maxDrawdown').innerText = '0%'
+    document.getElementById('consec').innerText = '0 / 0'
+    document.getElementById('avgMonthly').innerText = '0%'
+    document.getElementById('propStatus').innerText = 'No Trade'
+    calcStats.__cached = null
     return
   }
-
-  let wins = trades.filter(t => t.outcome === "win").length
-  let winrate = (wins / total * 100).toFixed(1)
-
-  let exp = 0
+ 
+  const wins    = trades.filter(t => t.outcome === 'win').length
+  const winrate = (wins / total * 100).toFixed(1)
+ 
+  let expVal = 0
   trades.forEach(t => {
-    if(t.outcome === "win") exp += t.rr
-    if(t.outcome === "loss") exp -= 1
+    if (t.outcome === 'win')  expVal += t.rr
+    if (t.outcome === 'loss') expVal -= 1
   })
-  exp = (exp / total).toFixed(2)
-
-  let totalPnl = trades.reduce((sum, t) => sum + t.pnlPoints, 0)
-  let pnlDollar = totalPnl * NQ_MULTIPLIER
-
-  // drawdown & streak
-  let capStart = 10000
-  let equity = capStart
-  let peak = equity
-  let maxDD = 0
+  const exp = (expVal / total).toFixed(2)
+ 
+  const totalPnlUSD = trades.reduce((s, t) => s + t.pnlUSD, 0)
+ 
+  // Drawdown & streaks
+  const capStart = 10000
+  let equity = capStart, peak = capStart, maxDD = 0
   let winStreak = 0, lossStreak = 0, maxWinStreak = 0, maxLossStreak = 0
   trades.forEach(t => {
-    let tradeUSD = t.pnlPoints * NQ_MULTIPLIER
-    equity += tradeUSD
-    if(equity > peak) peak = equity
+    equity += t.pnlUSD
+    if (equity > peak) peak = equity
     maxDD = Math.max(maxDD, ((peak - equity) / peak) * 100)
-
-    if(t.outcome === "win") {
-      winStreak += 1
-      lossStreak = 0
-      maxWinStreak = Math.max(maxWinStreak, winStreak)
-    } else if(t.outcome === "loss") {
-      lossStreak += 1
-      winStreak = 0
-      maxLossStreak = Math.max(maxLossStreak, lossStreak)
-    } else {
-      winStreak = 0
-      lossStreak = 0
-    }
+    if (t.outcome === 'win')  { winStreak++; lossStreak = 0; maxWinStreak = Math.max(maxWinStreak, winStreak) }
+    else if (t.outcome === 'loss') { lossStreak++; winStreak = 0; maxLossStreak = Math.max(maxLossStreak, lossStreak) }
+    else { winStreak = 0; lossStreak = 0 }
   })
-
-  let months = new Set(trades.map(t => `${t.time.getFullYear()}-${t.time.getMonth()}`)).size
-  let avgMonthly = months > 0 ? ((pnlDollar / capStart) / months * 100).toFixed(2) : "0.00"
-
-  let propWinReq = winrate >= 55
-  let propDdReq = maxDD <= 3
-  let propMthReq = avgMonthly >= 6
-  let propGood = (propWinReq && propDdReq && propMthReq)
-
-  document.getElementById("winrate").innerText = winrate + "%"
-  document.getElementById("exp").innerText = exp + "R"
-  let pnlColor = pnlDollar >= 0 ? "text-green-400" : "text-red-400"
-  document.getElementById("pnl").innerHTML = `<span class="${pnlColor}">${pnlDollar >= 0 ? '+' : ''}$${pnlDollar}</span>`
-
-  document.getElementById("maxDrawdown").innerText = maxDD.toFixed(2) + "%"
-  document.getElementById("consec").innerText = `${maxWinStreak} / ${maxLossStreak}`
-  document.getElementById("avgMonthly").innerText = avgMonthly + "%"
-  document.getElementById("propStatus").innerText = propGood ? "✅ Eligible" : "❌ Not Yet"
-
-  // store for CSV
-  calcStats.__cached = { total, winrate, exp, totalPnl, pnlDollar, maxDD, maxWinStreak, maxLossStreak, avgMonthly, propGood }
+ 
+  const months = new Set(trades.map(t => `${t.time.getFullYear()}-${t.time.getMonth()}`)).size
+  const avgMonthly = months > 0 ? ((totalPnlUSD / capStart) / months * 100).toFixed(2) : '0.00'
+ 
+  const propGood = parseFloat(winrate) >= 55 && maxDD <= 3 && parseFloat(avgMonthly) >= 6
+ 
+  document.getElementById('winrate').innerText = winrate + '%'
+  document.getElementById('exp').innerText     = exp + 'R'
+  const pnlColor = totalPnlUSD >= 0 ? 'text-green-400' : 'text-red-400'
+  document.getElementById('pnl').innerHTML     = `<span class="${pnlColor}">${totalPnlUSD >= 0 ? '+' : ''}$${totalPnlUSD.toFixed(2)}</span>`
+  document.getElementById('maxDrawdown').innerText = maxDD.toFixed(2) + '%'
+  document.getElementById('consec').innerText  = `${maxWinStreak} / ${maxLossStreak}`
+  document.getElementById('avgMonthly').innerText  = avgMonthly + '%'
+  document.getElementById('propStatus').innerText  = propGood ? '✅ Eligible' : '❌ Not Yet'
+ 
+  calcStats.__cached = { total, winrate, exp, totalPnlUSD, maxDD, maxWinStreak, maxLossStreak, avgMonthly, propGood }
 }
-
+ 
 function profitability(wr, rr) {
-  wr /= 100
-  let loss = 1 - wr
-  let e = (wr * rr) - loss
-  
-  if(e > 0) return "🟢 Profitable"
-  if(e === 0) return "🟡 BE"
-  return "🔴 Not Profitable"
+  const w = wr / 100, e = w * rr - (1 - w)
+  return e > 0 ? '🟢 Profitable' : e === 0 ? '🟡 BE' : '🔴 Not Profitable'
 }
-
+ 
+// ── RRR Analysis ──────────────────────────────────────────────────────────────
 function calcRRR() {
   if (trades.length === 0) {
-    rrr.innerHTML = '<p class="opacity-70">Tambah trades untuk analisis</p>'
+    document.getElementById('rrr').innerHTML = '<p class="opacity-70">Tambah trades untuk analisis</p>'
     return
   }
-
-  const categories = [
-    { key: "1:1", rr: 1 },
-    { key: "1:2", rr: 2 },
-    { key: "1:3+", rr: 3 },
-  ]
-
-  let html = ""
-  categories.forEach((c) => {
-    let arr = trades.filter((t) => t.cat === c.key)
-    let total = arr.length
-    let wins = arr.filter((t) => t.outcome === "win").length
-    let winrate = total ? ((wins / total) * 100).toFixed(1) : 0
-    let prof = total ? profitability(winrate, c.rr) : "N/A"
-    let bar = total ? Math.min(100, winrate) : 0
-
+  const cats = [{ key:'1:1', rr:1 },{ key:'1:2', rr:2 },{ key:'1:3+', rr:3 }]
+  let html = ''
+  cats.forEach(c => {
+    const arr   = trades.filter(t => t.cat === c.key)
+    const tot   = arr.length
+    const wins  = arr.filter(t => t.outcome === 'win').length
+    const wr    = tot ? (wins / tot * 100).toFixed(1) : 0
+    const prof  = tot ? profitability(wr, c.rr) : 'N/A'
+    const bar   = tot ? Math.min(100, wr) : 0
+    const pnl   = arr.reduce((s, t) => s + t.pnlUSD, 0)
     html += `
       <div class="rrr-card">
-        <div class="rrr-title">${c.key} (RR ${c.rr})</div>
-        <div class="text-xs opacity-70 mt-1">Trades: ${total} • Winrate: ${winrate}% • ${prof}</div>
-        <div class="rrr-line mt-2">
-          <div class="rrr-progress" style="width:${bar}%;"></div>
-        </div>
+        <div class="font-semibold">${c.key} (RR ${c.rr})</div>
+        <div class="text-xs opacity-70 mt-1">Trades: ${tot} · Winrate: ${wr}% · ${prof} · PNL: <span class="${pnl>=0?'text-green-400':'text-red-400'}">${pnl>=0?'+':''}$${pnl.toFixed(2)}</span></div>
+        <div class="rrr-line mt-2"><div class="rrr-progress" style="width:${bar}%"></div></div>
       </div>`
   })
-
-  rrr.innerHTML = html
+  document.getElementById('rrr').innerHTML = html
 }
-
-function prevMonth() {
-  currentMonth.setMonth(currentMonth.getMonth() - 1)
-  drawCalendar()
-}
-
-function nextMonth() {
-  currentMonth.setMonth(currentMonth.getMonth() + 1)
-  drawCalendar()
-}
-
+ 
+// ── Calendar ──────────────────────────────────────────────────────────────────
+function prevMonth() { currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1); drawCalendar() }
+function nextMonth() { currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1); drawCalendar() }
+ 
 function drawCalendar() {
-  let map = {}
+  const map = {}
   trades.forEach(t => {
-    let d = t.time.toISOString().split("T")[0]
-    if(!map[d]) map[d] = []
+    const d = t.time.toISOString().split('T')[0]
+    if (!map[d]) map[d] = []
     map[d].push(t)
   })
-  
-  let year = currentMonth.getFullYear()
-  let month = currentMonth.getMonth()
-  
-  let firstDay = new Date(year, month, 1)
-  let startDate = new Date(firstDay)
+ 
+  const year  = currentMonth.getFullYear()
+  const month = currentMonth.getMonth()
+  const firstDay = new Date(year, month, 1)
+  const startDate = new Date(firstDay)
   startDate.setDate(startDate.getDate() - firstDay.getDay())
-  
-  let monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"]
-  document.getElementById("monthLabel").innerText = monthNames[month] + " " + year
-  
-  let html = ""
-  let current = new Date(startDate)
-  
-  for(let i = 0; i < 42; i++) {
-    let key = current.toISOString().split("T")[0]
-    let isCurrentMonth = current.getMonth() === month
-    
-    if(!map[key]) {
-      html += `<div class="aspect-square bg-slate-700 rounded flex items-center justify-center text-xs opacity-30 ${!isCurrentMonth ? 'opacity-10' : ''}"></div>`
+ 
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  document.getElementById('monthLabel').innerText = monthNames[month] + ' ' + year
+ 
+  let html = ''
+  const cur = new Date(startDate)
+  for (let i = 0; i < 42; i++) {
+    const key = cur.toISOString().split('T')[0]
+    const inMonth = cur.getMonth() === month
+    if (!map[key]) {
+      html += `<div class="aspect-square bg-slate-700 rounded flex items-center justify-center text-xs ${inMonth ? 'opacity-30' : 'opacity-10'}">${inMonth ? cur.getDate() : ''}</div>`
     } else {
-      let day = map[key]
-      let w = day.filter(x => x.outcome === "win").length
-      let l = day.filter(x => x.outcome === "loss").length
-      let b = day.filter(x => x.outcome === "be").length
-      
-      let color = "bg-yellow-500"
-      if(w > l && w > b && w > 0) color = "bg-green-500"
-      else if(l > w && l > b && l > 0) color = "bg-red-500"
-      
-      let pnl = day.reduce((sum, t) => sum + t.pnlPoints, 0)
-      let pnlDollar = pnl * NQ_MULTIPLIER
-      let textColor = pnlDollar > 0 ? "text-green-300" : pnlDollar < 0 ? "text-red-300" : "text-white"
-      let summaryTitle = `${day.length} trades · W:${w} · L:${l} · BE:${b}`
-      
+      const day = map[key]
+      const w = day.filter(x => x.outcome === 'win').length
+      const l = day.filter(x => x.outcome === 'loss').length
+      const b = day.filter(x => x.outcome === 'be').length
+      let color = 'bg-yellow-500'
+      if (w > l && w > 0) color = 'bg-green-500'
+      else if (l > w && l > 0) color = 'bg-red-500'
+      const pnl = day.reduce((s, t) => s + t.pnlUSD, 0)
+      const tc  = pnl > 0 ? 'text-green-900' : pnl < 0 ? 'text-red-900' : 'text-black'
+      const tip = `${day.length} trades · W:${w} L:${l} BE:${b}`
       html += `
-      <div class="aspect-square ${color} rounded flex flex-col items-center justify-center text-xs font-bold text-black hover:shadow-lg hover:shadow-yellow-400/50 transition-all cursor-pointer group relative" title="${summaryTitle}">
-        <div class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-slate-900 px-2 py-1 rounded text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-700 z-10">
-          ${summaryTitle} | ${pnlDollar > 0 ? '+' : ''}$${pnlDollar}
-        </div>
-        <span>${current.getDate()}</span>
-        <span class="${textColor} text-[10px]">${w}W ${l}L ${b}BE</span>
-        <span class="${textColor} text-xs">${pnlDollar > 0 ? '+' : ''}$${pnlDollar}</span>
-      </div>`
+        <div class="aspect-square ${color} rounded flex flex-col items-center justify-center text-xs font-bold text-black hover:shadow-lg transition-all cursor-pointer group relative">
+          <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 px-2 py-1 rounded text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-700 z-10">
+            ${tip} | ${pnl>=0?'+':''}$${pnl.toFixed(2)}
+          </div>
+          <span>${cur.getDate()}</span>
+          <span class="${tc} text-[10px]">${w}W${l}L${b}BE</span>
+          <span class="${tc} text-[10px]">${pnl>=0?'+':''}$${pnl.toFixed(0)}</span>
+        </div>`
     }
-    
-    current.setDate(current.getDate() + 1)
+    cur.setDate(cur.getDate() + 1)
   }
-  
-  document.getElementById("calendar").innerHTML = html
+  document.getElementById('calendar').innerHTML = html
 }
-
+ 
+// ── Persistence ───────────────────────────────────────────────────────────────
+function saveTrades() {
+  try {
+    localStorage.setItem('ict_macro_trades_v2', JSON.stringify(
+      trades.map(t => ({ ...t, time: t.time.toISOString() }))
+    ))
+  } catch(e) { console.error('Save failed', e) }
+}
+ 
+function loadTrades() {
+  try {
+    // try new key first
+    let stored = localStorage.getItem('ict_macro_trades_v2')
+    // migrate old format
+    if (!stored) stored = localStorage.getItem('ict_macro_trades')
+    if (!stored) return
+    const parsed = JSON.parse(stored)
+    trades = (Array.isArray(parsed) ? parsed : []).map(t => ({
+      // defaults for older entries that lacked new fields
+      instrument: t.instrument || 'NQ',
+      instType:   t.instType   || 'futures',
+      unit:       t.unit       || 'Points',
+      lots:       t.lots       || 1,
+      riskUnits:  t.riskUnits  || t.risk  || 0,
+      rewUnits:   t.rewUnits   || t.reward || 0,
+      rr:         t.rr         || 1,
+      cat:        t.cat        || '1:1',
+      outcome:    t.outcome,
+      time:       new Date(t.time),
+      // pnlUSD: migrate old pnlPoints-based entries
+      pnlUSD:     t.pnlUSD     !== undefined ? t.pnlUSD : (t.pnlPoints || 0) * 20,
+      riskUSD:    t.riskUSD    || 0,
+      rewUSD:     t.rewUSD     || 0,
+      entryPrice: t.entryPrice || null,
+      slPrice:    t.slPrice    || null,
+      tpPrice:    t.tpPrice    || null,
+    }))
+  } catch(e) { console.error('Load failed', e); trades = [] }
+}
+ 
+// ── CSV Download ──────────────────────────────────────────────────────────────
 function downloadCSV() {
-  if(trades.length === 0) return alert("Tidak ada data untuk didownload")
-
-  let s = calcStats.__cached || {}
-  let total = s.total || trades.length
-  let winrate = s.winrate || 0
-  let exp = s.exp || "0.00"
-  let totalPnl = s.totalPnl || trades.reduce((sum,t)=>sum+t.pnlPoints,0)
-  let totalPnlUSD = s.pnlDollar || totalPnl * NQ_MULTIPLIER
-  let maxDD = s.maxDD || 0
-  let maxW = s.maxWinStreak || 0
-  let maxL = s.maxLossStreak || 0
-  let avgMonthly = s.avgMonthly || "0.00"
-  let propGood = s.propGood ? "✅ Eligible" : "❌ Not Yet"
-
-  let csv = "No,Date,Outcome,Risk (pts),Reward (pts),RR Ratio,PNL (pts),PNL (USD)\n"
+  if (trades.length === 0) return alert('Tidak ada data untuk didownload')
+  const s = calcStats.__cached || {}
+ 
+  let csv = 'No,Date,Instrument,Lots,Outcome,Risk (units),Reward (units),RR Ratio,Risk (USD),Reward (USD),PNL (USD),Entry,SL,TP\n'
   trades.forEach((t, i) => {
-    let date = t.time.toLocaleDateString('ms-MY')
-    let pnlUSD = t.pnlPoints * NQ_MULTIPLIER
-    csv += `${i+1},"${date}","${t.outcome}","${t.risk}","${t.reward}","${t.rr.toFixed(2)}","${t.pnlPoints}","${pnlUSD}"\n`
+    csv += `${i+1},"${t.time.toLocaleDateString('ms-MY')}","${t.instrument}","${t.lots}","${t.outcome}","${t.riskUnits.toFixed(2)}","${t.rewUnits.toFixed(2)}","${t.rr.toFixed(2)}","${t.riskUSD.toFixed(2)}","${t.rewUSD.toFixed(2)}","${t.pnlUSD.toFixed(2)}","${t.entryPrice||''}","${t.slPrice||''}","${t.tpPrice||''}"\n`
   })
-
-  csv += "\nSummary,,,,,,\n"
-  csv += `Total Trades,${total}\n`
-  csv += `Winrate,${winrate}%\n`
-  csv += `Expectancy,${exp}R\n`
-  csv += `Total PNL (pts),${totalPnl}\n`
-  csv += `Total PNL (USD),${totalPnlUSD}\n`
-  csv += `Max Drawdown,${maxDD.toFixed(2)}%\n`
-  csv += `Max Win Streak,${maxW}\n`
-  csv += `Max Loss Streak,${maxL}\n`
-  csv += `Avg Monthly Return,${avgMonthly}%\n`
-  csv += `Prop Firm Status,${propGood}\n`
-
-  csv += "\nRRR Category,Trades,Winrate,Profitability\n"
-  ;["1:1","1:2","1:3+"].forEach(c => {
-    let arr = trades.filter(t => t.cat === c)
-    if (arr.length === 0) {
-      csv += `${c},0,0%,N/A\n`
-      return
-    }
-    let winsCat = arr.filter(t => t.outcome === "win").length
-    let wrCat = (winsCat / arr.length * 100).toFixed(1)
-    let rrVal = c === "1:1" ? 1 : c === "1:2" ? 2 : 3
-    let prof = profitability(wrCat, rrVal)
-    csv += `${c},${arr.length},${wrCat}%,${prof}\n`
-  })
-
-  let blob = new Blob([csv], { type: 'text/csv' })
-  let url = window.URL.createObjectURL(blob)
-  let a = document.createElement('a')
-  a.href = url
-  a.download = `ICT_Macro_Journal_${new Date().toISOString().split('T')[0]}.csv`
-  a.click()
-  window.URL.revokeObjectURL(url)
+ 
+  csv += '\nSummary\n'
+  csv += `Total Trades,${s.total||trades.length}\n`
+  csv += `Winrate,${s.winrate||0}%\n`
+  csv += `Expectancy,${s.exp||0}R\n`
+  csv += `Total PNL (USD),${(s.totalPnlUSD||0).toFixed(2)}\n`
+  csv += `Max Drawdown,${(s.maxDD||0).toFixed(2)}%\n`
+  csv += `Max Win Streak,${s.maxWinStreak||0}\n`
+  csv += `Max Loss Streak,${s.maxLossStreak||0}\n`
+  csv += `Avg Monthly Return,${s.avgMonthly||0}%\n`
+  csv += `Prop Firm Status,${s.propGood ? '✅ Eligible' : '❌ Not Yet'}\n`
+ 
+  const blob = new Blob([csv], { type:'text/csv' })
+  const url  = URL.createObjectURL(blob)
+  const a    = document.createElement('a')
+  a.href = url; a.download = `ICT_Macro_Journal_${new Date().toISOString().split('T')[0]}.csv`
+  a.click(); URL.revokeObjectURL(url)
 }
-
+ 
+// ── Reset ─────────────────────────────────────────────────────────────────────
 function updateResetButton() {
-  let btn = document.getElementById("resetBtn")
-  if(trades.length >= 100) {
-    btn.style.display = "block"
-  } else {
-    btn.style.display = "none"
-  }
+  document.getElementById('resetBtn').style.display = trades.length >= 100 ? 'block' : 'none'
 }
-
+ 
 function resetAllTrades() {
-  if(!confirm("⚠️ Reset semua " + trades.length + " trades? Yakin?")) return
-  trades = []
-  outcome = null
-  update()
+  if (!confirm(`⚠️ Reset semua ${trades.length} trades? Yakin?`)) return
+  trades = []; outcome = null; update()
 }
-
+ 
+// ── Background dots ───────────────────────────────────────────────────────────
 function buildLiveDots() {
   const bg = document.getElementById('live-bg')
   bg.innerHTML = ''
-
-  const count = 30
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < 30; i++) {
     const dot = document.createElement('span')
     dot.className = 'live-dot'
-
-    const left = (Math.random() * 100).toFixed(2)
-    const top = (Math.random() * 100).toFixed(2)
-    const size = 4 + Math.random() * 8
     const hue = Math.floor(Math.random() * 360)
-    const duration = (8 + Math.random() * 10).toFixed(2)
-    const delay = -(Math.random() * duration).toFixed(2)
-
-    dot.style.left = `${left}%`
-    dot.style.top = `${top}%`
-    dot.style.width = `${size}px`
-    dot.style.height = `${size}px`
-    dot.style.background = `radial-gradient(circle at 35% 35%, hsla(${hue}, 100%, 95%, .95), hsla(${hue}, 90%, 60%, .3))`
-    dot.style.boxShadow = `0 0 15px hsla(${hue}, 100%, 85%, .5), 0 0 22px hsla(${hue}, 80%, 65%, .4)`
-    dot.style.animationDuration = `${duration}s, ${4 + Math.random() * 2}s`
-    dot.style.animationDelay = `${delay}s`
-
+    const size = 4 + Math.random() * 8
+    const dur  = (8 + Math.random() * 10).toFixed(2)
+    const delay = -(Math.random() * dur).toFixed(2)
+    dot.style.cssText = `
+      left:${(Math.random()*100).toFixed(2)}%;
+      top:${(Math.random()*100).toFixed(2)}%;
+      width:${size}px; height:${size}px;
+      background:radial-gradient(circle at 35% 35%, hsla(${hue},100%,95%,.95), hsla(${hue},90%,60%,.3));
+      box-shadow:0 0 15px hsla(${hue},100%,85%,.5),0 0 22px hsla(${hue},80%,65%,.4);
+      animation-duration:${dur}s,${(4+Math.random()*2).toFixed(2)}s;
+      animation-delay:${delay}s;
+    `
     bg.appendChild(dot)
   }
 }
-
+ 
+// ── Init ──────────────────────────────────────────────────────────────────────
 loadTrades()
 buildLiveDots()
+onInstrumentChange()
 update()
 </script>
-
 </body>
 </html>
