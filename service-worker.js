@@ -1,3 +1,4 @@
+// Bump cache version when app shell assets change
 const CACHE_NAME = 'ict-macro-journal-v1'
 const APP_SHELL = [
   './',
@@ -35,7 +36,11 @@ self.addEventListener('fetch', event => {
       fetch(event.request)
         .then(response => {
           const responseClone = response.clone()
-          caches.open(CACHE_NAME).then(cache => cache.put('./index.html', responseClone))
+          event.waitUntil(
+            caches.open(CACHE_NAME)
+              .then(cache => cache.put('./index.html', responseClone))
+              .catch(err => console.error('Cache update failed (navigation)', err))
+          )
           return response
         })
         .catch(() => caches.match('./index.html'))
@@ -49,7 +54,11 @@ self.addEventListener('fetch', event => {
       return fetch(event.request).then(response => {
         if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone()
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone))
+          event.waitUntil(
+            caches.open(CACHE_NAME)
+              .then(cache => cache.put(event.request, responseClone))
+              .catch(err => console.error('Cache update failed (asset)', err))
+          )
         }
         return response
       })

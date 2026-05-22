@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -174,7 +174,7 @@
   <div>
     <h1 class="title-glow"><i class="fa-solid fa-chart-column mr-2" aria-hidden="true"></i>ICT Macro Journal</h1>
     <p class="text-sm opacity-70 mt-2 flex gap-2 flex-wrap justify-center">
-      <span>Backtester / Forwardtest</span><span>•</span><span>Dev: Syasya</span>
+      <span>Backtester / Forward test</span><span>•</span><span>Dev: Syasya</span>
     </p>
     <div class="flex gap-2 mt-3 text-xs flex-wrap justify-center">
       <span class="tech-badge tech-html"><i class="fab fa-html5"></i><span>HTML5</span></span>
@@ -183,8 +183,8 @@
     </div>
   </div>
   <div class="flex gap-2">
-    <button onclick="downloadCSV()" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm"><i class="fa-solid fa-file-csv mr-1" aria-hidden="true"></i> Download CSV</button>
-    <button onclick="resetAllTrades()" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;"><i class="fa-solid fa-rotate-left mr-1" aria-hidden="true"></i> Reset (100+)</button>
+    <button onclick="downloadCSV()" aria-label="Download CSV" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm"><i class="fa-solid fa-file-csv mr-1" aria-hidden="true"></i> Download CSV</button>
+    <button onclick="resetAllTrades()" aria-label="Reset all trades" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;"><i class="fa-solid fa-rotate-left mr-1" aria-hidden="true"></i> Reset (100+)</button>
   </div>
 </div>
  
@@ -192,10 +192,10 @@
 <div class="bg-blue-900/30 border border-blue-700 rounded-xl p-4 space-y-2">
   <p class="font-semibold text-blue-300"><i class="fa-solid fa-circle-info mr-1" aria-hidden="true"></i>Information</p>
   <ul class="text-xs opacity-90 space-y-1 ml-4">
-    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i><span class="font-semibold">Static Website</span> — data hanya disimpan dalam device anda</li>
-    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Data akan hilang jika browser cache dibersihkan — backup dengan CSV</li>
-    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Futures (NQ/ES/MES/MNQ) dikira dalam <span class="font-semibold">Points</span>, Gold dalam <span class="font-semibold">Pips (0.1)</span>, Forex dalam <span class="font-semibold">Pips (0.0001/0.01)</span></li>
-    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Reset button muncul apabila total trades ≥ 100</li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i><span class="font-semibold">Static Website</span> — data is stored only on your current device</li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Data will be lost if browser cache is cleared — back up using CSV</li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Futures (NQ/ES/MES/MNQ) are calculated in <span class="font-semibold">Points</span>, Gold in <span class="font-semibold">Pips (0.1)</span>, and Forex in <span class="font-semibold">Pips (0.0001/0.01)</span></li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Reset button appears when total trades are ≥ 100</li>
   </ul>
 </div>
  
@@ -646,7 +646,6 @@ function addTrade() {
   outcome = null
  
   update()
-
 }
 
  
@@ -719,7 +718,7 @@ function calcStats() {
  
 function profitability(wr, rr) {
   const w = wr / 100, e = w * rr - (1 - w)
-  return e > 0 ? 'Profitable' : e === 0 ? 'Break-even' : 'Not Profitable'
+  return e > 0 ? 'Profitable' : e === 0 ? 'BE' : 'Not Profitable'
 }
  
 // ── RRR Analysis ──────────────────────────────────────────────────────────────
@@ -876,9 +875,8 @@ function updateResetButton() {
 }
  
 function resetAllTrades() {
-  if (!confirm(`Reset semua ${trades.length} trades? Yakin?`)) return
+  if (!confirm(`Reset all ${trades.length} trades? Are you sure?`)) return
   trades = []; outcome = null; update()
-
 }
 
  
@@ -914,7 +912,7 @@ update()
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').catch(err => console.error('SW registration failed', err))
+    navigator.serviceWorker.register('./service-worker.js').catch(err => console.error('Service Worker registration failed', err))
   })
 }
 </script>

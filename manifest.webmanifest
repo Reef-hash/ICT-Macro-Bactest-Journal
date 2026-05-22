@@ -2,7 +2,7 @@
   "name": "ICT Macro Journal",
   "short_name": "ICT Journal",
   "description": "ICT trading journal for backtesting and forward testing.",
-  "lang": "ms",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
