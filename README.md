@@ -39,6 +39,10 @@ Designed to track performance using **Risk-Reward (RRR), expectancy, drawdown, a
 - 💾 **Local Storage System**
   - All data stored in browser (no account required)
 
+- 📲 **PWA Ready (Android + iOS)**
+  - Installable app experience on mobile
+  - Supports offline app shell for core usage
+
 - 📥 **CSV Export**
   - Full trade history + summary stats
   - Backup your data anytime

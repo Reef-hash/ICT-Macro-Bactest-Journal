@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ICT Macro Journal">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
 <title>ICT Macro Journal</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -165,7 +172,7 @@
 <!-- ════════════════ HEADER ════════════════ -->
 <div class="flex flex-col items-center gap-4 text-center mb-2">
   <div>
-    <h1 class="title-glow">📊 ICT Macro Journal</h1>
+    <h1 class="title-glow"><i class="fa-solid fa-chart-column mr-2" aria-hidden="true"></i>ICT Macro Journal</h1>
     <p class="text-sm opacity-70 mt-2 flex gap-2 flex-wrap justify-center">
       <span>Backtester / Forwardtest</span><span>•</span><span>Dev: Syasya</span>
     </p>
@@ -176,19 +183,19 @@
     </div>
   </div>
   <div class="flex gap-2">
-    <button onclick="downloadCSV()" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm">📥 Download CSV</button>
-    <button onclick="resetAllTrades()" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;">🔄 Reset (100+)</button>
+    <button onclick="downloadCSV()" class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all text-sm"><i class="fa-solid fa-file-csv mr-1" aria-hidden="true"></i> Download CSV</button>
+    <button onclick="resetAllTrades()" class="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all text-sm" id="resetBtn" style="display:none;"><i class="fa-solid fa-rotate-left mr-1" aria-hidden="true"></i> Reset (100+)</button>
   </div>
 </div>
  
 <!-- ════════════════ INFO BANNER ════════════════ -->
 <div class="bg-blue-900/30 border border-blue-700 rounded-xl p-4 space-y-2">
-  <p class="font-semibold text-blue-300">ℹ️ Information</p>
+  <p class="font-semibold text-blue-300"><i class="fa-solid fa-circle-info mr-1" aria-hidden="true"></i>Information</p>
   <ul class="text-xs opacity-90 space-y-1 ml-4">
-    <li>✓ <span class="font-semibold">Static Website</span> — data hanya disimpan dalam device anda</li>
-    <li>✓ Data akan hilang jika browser cache dibersihkan — backup dengan CSV</li>
-    <li>✓ Futures (NQ/ES/MES/MNQ) dikira dalam <span class="font-semibold">Points</span>, Gold dalam <span class="font-semibold">Pips (0.1)</span>, Forex dalam <span class="font-semibold">Pips (0.0001/0.01)</span></li>
-    <li>✓ Reset button muncul apabila total trades ≥ 100</li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i><span class="font-semibold">Static Website</span> — data hanya disimpan dalam device anda</li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Data akan hilang jika browser cache dibersihkan — backup dengan CSV</li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Futures (NQ/ES/MES/MNQ) dikira dalam <span class="font-semibold">Points</span>, Gold dalam <span class="font-semibold">Pips (0.1)</span>, Forex dalam <span class="font-semibold">Pips (0.0001/0.01)</span></li>
+    <li><i class="fa-solid fa-check text-emerald-400 mr-1" aria-hidden="true"></i>Reset button muncul apabila total trades ≥ 100</li>
   </ul>
 </div>
  
@@ -275,7 +282,7 @@
           <option value="BTCUSD">BTCUSD</option>
           <option value="ETHUSD">ETHUSD</option>
         </optgroup>
-        <option value="CUSTOM">✏️ Custom Instrument</option>
+        <option value="CUSTOM">Custom Instrument</option>
       </select>
       <input id="customInstInput" placeholder="e.g. GBPNZD" class="hidden flex-1 min-w-32 p-2 rounded bg-slate-700 border border-slate-600 focus:border-yellow-400 outline-none transition-colors text-sm">
     </div>
@@ -301,8 +308,8 @@
   <div class="space-y-2">
     <label class="text-xs font-semibold opacity-70 uppercase tracking-wider">Input Mode</label>
     <div class="flex gap-2">
-      <button class="mode-btn active" id="modeBtnPrice" onclick="setMode('price')">📍 Entry / SL / TP Price</button>
-      <button class="mode-btn" id="modeBtnManual" onclick="setMode('manual')">✏️ Manual Risk / Reward</button>
+      <button class="mode-btn active" id="modeBtnPrice" onclick="setMode('price')"><i class="fa-solid fa-location-dot mr-1" aria-hidden="true"></i>Entry / SL / TP Price</button>
+      <button class="mode-btn" id="modeBtnManual" onclick="setMode('manual')"><i class="fa-solid fa-pen mr-1" aria-hidden="true"></i>Manual Risk / Reward</button>
     </div>
   </div>
  
@@ -362,37 +369,37 @@
   <div class="flex gap-3">
     <button onclick="setOutcome('win')" id="btnWin"
       class="outcome-btn flex-1 bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-bold">
-      ✅ WIN
+      <i class="fa-solid fa-circle-check mr-1" aria-hidden="true"></i>WIN
     </button>
     <button onclick="setOutcome('be')" id="btnBe"
       class="outcome-btn flex-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-bold">
-      ➖ BE
+      <i class="fa-solid fa-circle-minus mr-1" aria-hidden="true"></i>BE
     </button>
     <button onclick="setOutcome('loss')" id="btnLoss"
       class="outcome-btn flex-1 bg-gradient-to-r from-rose-500 to-red-600 text-black font-bold">
-      ❌ LOSS
+      <i class="fa-solid fa-circle-xmark mr-1" aria-hidden="true"></i>LOSS
     </button>
   </div>
  
   <button onclick="addTrade()" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-yellow-500/50 transition-all">
-    ➕ Add Trade
+    <i class="fa-solid fa-plus mr-1" aria-hidden="true"></i>Add Trade
   </button>
 </div>
  
 <!-- ════════════════ RRR ════════════════ -->
 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-  <h3 class="font-semibold mb-3 text-lg">📈 Risk-Reward-Ratio Analysis</h3>
+  <h3 class="font-semibold mb-3 text-lg"><i class="fa-solid fa-chart-line mr-1" aria-hidden="true"></i>Risk-Reward-Ratio Analysis</h3>
   <div id="rrr" class="grid grid-cols-1 gap-3"></div>
 </div>
  
 <!-- ════════════════ CALENDAR ════════════════ -->
 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
   <div class="flex justify-between items-center mb-4">
-    <h3 class="font-semibold text-lg">📅 Trading Calendar</h3>
+    <h3 class="font-semibold text-lg"><i class="fa-solid fa-calendar-days mr-1" aria-hidden="true"></i>Trading Calendar</h3>
     <div class="flex gap-2">
-      <button onclick="prevMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">←</button>
+      <button onclick="prevMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600" aria-label="Previous month"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
       <span id="monthLabel" class="font-semibold text-sm min-w-40 text-center"></span>
-      <button onclick="nextMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600">→</button>
+      <button onclick="nextMonth()" class="bg-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-600" aria-label="Next month"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
     </div>
   </div>
   <div class="grid grid-cols-7 gap-2 mb-4">
@@ -639,7 +646,9 @@ function addTrade() {
   outcome = null
  
   update()
+
 }
+
  
 // ── Core update ───────────────────────────────────────────────────────────────
 function update() {
@@ -703,14 +712,14 @@ function calcStats() {
   document.getElementById('maxDrawdown').innerText = maxDD.toFixed(2) + '%'
   document.getElementById('consec').innerText  = `${maxWinStreak} / ${maxLossStreak}`
   document.getElementById('avgMonthly').innerText  = avgMonthly + '%'
-  document.getElementById('propStatus').innerText  = propGood ? '✅ Eligible' : '❌ Not Yet'
+  document.getElementById('propStatus').innerText  = propGood ? 'Eligible' : 'Not Yet'
  
   calcStats.__cached = { total, winrate, exp, totalPnlUSD, maxDD, maxWinStreak, maxLossStreak, avgMonthly, propGood }
 }
  
 function profitability(wr, rr) {
   const w = wr / 100, e = w * rr - (1 - w)
-  return e > 0 ? '🟢 Profitable' : e === 0 ? '🟡 BE' : '🔴 Not Profitable'
+  return e > 0 ? 'Profitable' : e === 0 ? 'Break-even' : 'Not Profitable'
 }
  
 // ── RRR Analysis ──────────────────────────────────────────────────────────────
@@ -852,7 +861,7 @@ function downloadCSV() {
   csv += `Max Win Streak,${s.maxWinStreak||0}\n`
   csv += `Max Loss Streak,${s.maxLossStreak||0}\n`
   csv += `Avg Monthly Return,${s.avgMonthly||0}%\n`
-  csv += `Prop Firm Status,${s.propGood ? '✅ Eligible' : '❌ Not Yet'}\n`
+  csv += `Prop Firm Status,${s.propGood ? 'Eligible' : 'Not Yet'}\n`
  
   const blob = new Blob([csv], { type:'text/csv' })
   const url  = URL.createObjectURL(blob)
@@ -867,9 +876,11 @@ function updateResetButton() {
 }
  
 function resetAllTrades() {
-  if (!confirm(`⚠️ Reset semua ${trades.length} trades? Yakin?`)) return
+  if (!confirm(`Reset semua ${trades.length} trades? Yakin?`)) return
   trades = []; outcome = null; update()
+
 }
+
  
 // ── Background dots ───────────────────────────────────────────────────────────
 function buildLiveDots() {
@@ -900,6 +911,12 @@ loadTrades()
 buildLiveDots()
 onInstrumentChange()
 update()
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(err => console.error('SW registration failed', err))
+  })
+}
 </script>
 </body>
 </html>
