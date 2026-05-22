@@ -114,9 +114,7 @@ Designed to track performance using **Risk-Reward (RRR), expectancy, drawdown, a
 
 ## 👨‍💻 Developer
 
-**Zarif (Reef)**  
-- TikTok: https://www.tiktok.com/@zarif02912  
-- GitHub: https://github.com/Reef-hash  
+**Syasya**  
 
 ---
 

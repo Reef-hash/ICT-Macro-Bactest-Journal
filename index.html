@@ -76,14 +76,6 @@
     border-radius:50%; transition:left .3s; z-index:-1;
   }
   .social-icon:hover { transform:translateY(-5px); }
-  .social-tiktok { border-color:#25f4ee; color:#25f4ee; background:linear-gradient(135deg,rgba(37,244,238,.15),rgba(37,244,238,.05)); }
-  .social-tiktok::before { background:linear-gradient(135deg,#25f4ee,#00d4ff); }
-  .social-tiktok:hover { color:#000; box-shadow:0 0 20px rgba(37,244,238,.7),0 0 40px rgba(37,244,238,.4); }
-  .social-tiktok:hover::before { left:0; }
-  .social-github { border-color:#fff; color:#fff; }
-  .social-github::before { background:linear-gradient(135deg,#fff,#555); }
-  .social-github:hover { color:#000; box-shadow:0 0 20px rgba(255,255,255,.5); }
-  .social-github:hover::before { left:0; }
  
   /* ── RRR cards ── */
   .rrr-card {
@@ -175,16 +167,12 @@
   <div>
     <h1 class="title-glow">📊 ICT Macro Journal</h1>
     <p class="text-sm opacity-70 mt-2 flex gap-2 flex-wrap justify-center">
-      <span>Backtester / Forwardtest</span><span>•</span><span>Dev: Zarif (Reef)</span>
+      <span>Backtester / Forwardtest</span><span>•</span><span>Dev: Syasya</span>
     </p>
     <div class="flex gap-2 mt-3 text-xs flex-wrap justify-center">
       <span class="tech-badge tech-html"><i class="fab fa-html5"></i><span>HTML5</span></span>
       <span class="tech-badge tech-css"><i class="fab fa-css3-alt"></i><span>CSS3</span></span>
       <span class="tech-badge tech-js"><i class="fab fa-js"></i><span>JavaScript</span></span>
-    </div>
-    <div class="flex gap-3 mt-4 justify-center">
-      <a href="https://www.tiktok.com/@zarif02912" target="_blank" rel="noopener noreferrer" class="social-icon social-tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://github.com/Reef-hash" target="_blank" rel="noopener noreferrer" class="social-icon social-github" title="GitHub"><i class="fab fa-github"></i></a>
     </div>
   </div>
   <div class="flex gap-2">
@@ -592,7 +580,7 @@ function rrCat(rr) {
  
 // ── Add Trade ─────────────────────────────────────────────────────────────────
 function addTrade() {
-  if (!outcome) return alert('Pilih outcome: WIN / BE / LOSS')
+  if (!outcome) return alert('Select outcome: WIN / BE / LOSS')
  
   const inst = getInst()
   const lots = parseFloat(document.getElementById('lotSize').value) || 1
@@ -603,7 +591,7 @@ function addTrade() {
     entryP = parseFloat(document.getElementById('entryPrice').value)
     slP    = parseFloat(document.getElementById('slPrice').value)
     tpP    = parseFloat(document.getElementById('tpPrice').value)
-    if (!entryP || !slP || !tpP) return alert('Isi Entry, SL, dan TP price')
+    if (!entryP || !slP || !tpP) return alert('Fill in Entry, SL, and TP price')
  
     const riskDist = Math.abs(entryP - slP)
     const rewDist  = Math.abs(tpP - entryP)
@@ -612,7 +600,7 @@ function addTrade() {
   } else {
     riskUnits = parseFloat(document.getElementById('risk').value)
     rewUnits  = parseFloat(document.getElementById('reward').value)
-    if (!riskUnits || !rewUnits) return alert('Isi Risk dan Reward')
+    if (!riskUnits || !rewUnits) return alert('Fill in Risk and Reward')
   }
  
   rr       = rewUnits / riskUnits
@@ -847,7 +835,7 @@ function loadTrades() {
  
 // ── CSV Download ──────────────────────────────────────────────────────────────
 function downloadCSV() {
-  if (trades.length === 0) return alert('Tidak ada data untuk didownload')
+  if (trades.length === 0) return alert('No data available to download')
   const s = calcStats.__cached || {}
  
   let csv = 'No,Date,Instrument,Lots,Outcome,Risk (units),Reward (units),RR Ratio,Risk (USD),Reward (USD),PNL (USD),Entry,SL,TP\n'
